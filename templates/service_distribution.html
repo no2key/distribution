@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}ERP服务发布{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $("#service_distribution").addClass("active");
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid offset4">
+        <div class="well well-small text-center">
+                <h3>ERP服务发布</h3>
+        </div>
+        <div class="container-fluid">
+            {% if services %}
+            <table class="table table-striped table-hover table-bordered">
+                {% for item in services %}
+                    <thead>
+                        <th> 服务名称 </th>
+                        <th> 分类 </th>
+                        <th> 服务器 </th>
+                        <th> SVN拉取 </th>
+                        <th> 推送上线 </th>
+                        <th> 重启服务 </th>
+                    </thead>
+                    <tbody>
+                        <td> {{item.svc_name}} </td>
+                        <td> {{item.category}} </td>
+                        <td> 
+                            {% for m in item.server_list.all %}
+                                    {{ m.ip }}
+                                    <br />
+                            {%endfor%}
+                        </td>
+                        <td> <a class="btn btn-info" href="/svn_pull/{{ item.id }}">拉取新版</a> </td>
+                        <td> <a class="btn btn-info" href="/push_online/{{ item.id }}">推送上线</a> </td>
+                        <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启{{item.svc_name}}服务</a> </td>
+                {% endfor %}
+            </table>
+            {% else %}
+                <h3>暂无可用服务</h3>
+                <a href="/service_add/" class="btn btn-primary"> 增加服务 </a>
+            {% endif %}
+    	</div>
+    </div>
+{% endblock %}
