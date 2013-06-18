@@ -18,12 +18,17 @@ def invoke_shell(shell_path):
     #client.connect('192.168.2.140', 36000, username='Administrator')
     client.connect('192.168.2.237', 22, username='root', password='redhat')
     _, out, _ = client.exec_command(shell_path)
-    result = out.read()
+    output = []
+    for line in out:
+        if len(output) > 9:
+            output.pop(0)
+        output.append(line)
+    result = ''.join(output)
     return result
 
 
 @task
-def invoke_shell_0(shell_path):
+def invoke_shell_local(shell_path):
     os.system(shell_path)
     return
 

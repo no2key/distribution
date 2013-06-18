@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'service_restart/(?P<pk>\d+)', views.service_restart, name='service_restart'),
     url(r'task_queue/', views.TaskQueue.as_view(), name='task_queue'),
     url(r'refresh_queue/', ajax.refresh_task_queue, name='refresh_queue'),
+    url(r'ajax_queue/', ajax.ajax_queue.as_view(), name='ajax_queue'),
 
     url(r'service_add/', views.ServiceAdd.as_view(), name='service_add'),
     url(r'service_edit/(?P<pk>\d+)', views.ServiceEdit.as_view(), name='service_edit'),
