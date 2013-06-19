@@ -9,6 +9,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
+from distribution.settings import SVN_PREFIX, SVN_PASSWORD, SVN_USERNAME
 from dist.tasks import invoke_shell
 from dist.models import *
 
@@ -20,8 +21,20 @@ def distribution(request):
 
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svn_path = service.svn_config_path
-    result = invoke_shell.delay(svn_path)
+    svn_config = SVN_PREFIX + service.svn_config_path
+    svn_code = SVN_PREFIX + service.svn_package_path
+    prepare_temp_dir = "DATE=`date +%s`; " \
+                       "mkdir publish/other/svn_tmp_$DATE/; " \
+                       "mkdir publish/other/svn_tmp_$DATE/code/; " \
+                       "mkdir publish/other/svn_tmp_$DATE/config/;"
+    checkout_config = "publish/other/svn_tmp_$DATE/config/; " \
+                      "svn checkout %s --username=%s --password=%s;" % (svn_config, SVN_USERNAME, SVN_PASSWORD)
+    checkout_code = "publish/other/svn_tmp_$DATE/code/; " \
+                    "svn checkout %s --username=%s --password=%s;" % (svn_code, SVN_USERNAME, SVN_PASSWORD)
+    code_destination = "cp publish/other/svn_tmp_$DATE%s/* %s;" % (service.svn_package_path, service.execute_machine)
+    config_destination = "cp publish/other/svn_tmp_$DATE%s/* %s;" % (service.svn_config_path, service.execute_machine)
+    svn_command = prepare_temp_dir + checkout_code + checkout_config + code_destination + config_destination
+    result = invoke_shell.delay(svn_command)
     if not result.result:
         m_result = ""
     else:
@@ -32,7 +45,7 @@ def svn_pull(request, pk):
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
-        t_people="Test",
+        t_people="User",
     )
     task.save()
     return HttpResponseRedirect('/task_queue/')
