@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" compressed="false" hash="3650532590" />
+  <component name="DataSourceManagerImpl" format="xml" hash="3650532590">
+    <data-source source="LOCAL" name="Django default" product="MySQL" version="5.1.39-ndb-7.0.9-cluster-gpl" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.22 ( Revision: ${bzr.revision-id} )" uuid="312849db-6b71-4ae7-b3a3-10baf2c76a7b">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql:///dist</jdbc-url>
+      <user-name>root</user-name>
+      <libraries>
+        <library>
+          <url>file://$USER_HOME$/.PyCharm20/config/jdbc-drivers/mysql-connector-license.txt</url>
+        </library>
+        <library>
+          <url>file://$USER_HOME$/.PyCharm20/config/jdbc-drivers/mysql-connector-java-5.1.22-bin.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+  </component>
 </project>
 
