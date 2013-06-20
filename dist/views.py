@@ -21,8 +21,8 @@ def distribution(request):
 
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svn_config = SVN_PREFIX + service.svn_config_path
-    svn_code = SVN_PREFIX + service.svn_package_path
+    svn_config = SVN_PREFIX + '/config/' + service.svn_config_path
+    svn_code = SVN_PREFIX + '/code/' + service.svn_package_path
     prepare_temp_dir = "PATH=$PATH:/cygdrive/c/\"Program Files\"/TortoiseSVN/bin;" \
                        "DATE=`date +%s`; " \
                        "mkdir /home/Administrator/publish/other/svn_tmp_$DATE/; " \

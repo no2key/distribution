@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" name="Default" comment="添加SVN拉取代码">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignores" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/shuangluo.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/shuangluo.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" name="Default" comment="">
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\.name" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\dataSources.ids" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\dataSources.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\dictionaries\shuangluo.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\distribution.iml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\other.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\scopes\scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\testrunner.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\python_docs\distribution\.idea\workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/service_add.html" afterPath="$PROJECT_DIR$/templates/service_add.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/service_edit.html" afterPath="$PROJECT_DIR$/templates/service_edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/distribution/settings.py" afterPath="$PROJECT_DIR$/distribution/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/views.py" afterPath="$PROJECT_DIR$/dist/views.py" />
     </list>
     <ignored path="distribution.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/settings.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371623609099" ignored="false" />
-    <file path="/views.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371636550087" ignored="false" />
-    <file path="/models.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371455783473" ignored="false" />
+    <file path="/settings.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371705620981" ignored="false" />
+    <file path="/views.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371698304946" ignored="false" />
+    <file path="/models.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371698407250" ignored="false" />
     <file path="/admin.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1370743107466" ignored="false" />
     <file path="/base.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1370744699067" ignored="false" />
     <file path="/urls.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371523890442" ignored="false" />
@@ -45,10 +57,11 @@
     <file path="$PROJECT_DIR$/../django_platform/ldap/templates/operator/opuserclone.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371454943014" ignored="false" />
     <file path="$PROJECT_DIR$/../django_platform/ldap/templates/operator/opuseredit.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371454943014" ignored="false" />
     <file path="$PROJECT_DIR$/../django_platform/templates/invalid.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371455158817" ignored="false" />
-    <file path="/Dummy.txt" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371692863898" ignored="false" />
+    <file path="/Dummy.txt" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371692973141" ignored="false" />
     <file path="$PROJECT_DIR$/../django_platform/ldap/models.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371455783473" ignored="false" />
     <file path="/ajax_queue.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371535737984" ignored="false" />
     <file path="/.gitignores" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371692888837" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/dictionaries/shuangluo.xml" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371693377583" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +98,7 @@
       <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dist/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="5" selection-start="2627" selection-end="2627" vertical-scroll-proportion="0.8152174">
+            <state line="53" column="26" selection-start="2620" selection-end="2620" vertical-scroll-proportion="0.531401">
               <folding>
                 <element signature="e#144#155#0" expanded="true" />
               </folding>
@@ -93,10 +106,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/distribution/settings.py">
+      <file leaf-file-name="service_add.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/service_add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="169" column="28" selection-start="5670" selection-end="5670" vertical-scroll-proportion="0.0">
+            <state line="62" column="10" selection-start="2662" selection-end="2662" vertical-scroll-proportion="-18.961538">
               <folding />
             </state>
           </provider>
@@ -121,7 +134,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/templates/server_add.html" />
         <option value="$PROJECT_DIR$/templates/confirm_delete.html" />
         <option value="$PROJECT_DIR$/templates/service_add.html" />
         <option value="dbtable:/64c75b49/312849db-6b71-4ae7-b3a3-10baf2c76a7b/dist..dist_taskmodel" />
@@ -133,10 +145,11 @@
         <option value="$PROJECT_DIR$/templates/navlist.html" />
         <option value="$PROJECT_DIR$/templates/ajax_queue.html" />
         <option value="$PROJECT_DIR$/templates/task_queue.html" />
-        <option value="$PROJECT_DIR$/distribution/settings.py" />
         <option value="dbtable:/64c75b49/312849db-6b71-4ae7-b3a3-10baf2c76a7b/dist..dist_service" />
-        <option value="$PROJECT_DIR$/dist/views.py" />
         <option value="$PROJECT_DIR$/.gitignores" />
+        <option value="$PROJECT_DIR$/dist/views.py" />
+        <option value="$PROJECT_DIR$/distribution/settings.py" />
+        <option value="$PROJECT_DIR$/dist/models.py" />
       </list>
     </option>
   </component>
@@ -453,7 +466,11 @@
       <created>1371692855276</created>
       <updated>1371692855276</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="将无用配置不提交到git">
+      <created>1371692975296</created>
+      <updated>1371692975296</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -542,7 +559,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="SVN拉取Bugfix: 增加svn环境变量" />
+    <option name="LAST_COMMIT_MESSAGE" value="将无用配置不提交到git" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -559,23 +576,17 @@
     <MESSAGE value="任务队列ajax刷新" />
     <MESSAGE value="添加SVN拉取代码" />
     <MESSAGE value="SVN拉取Bugfix: 增加svn环境变量" />
+    <MESSAGE value="将无用配置不提交到git" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="18" />
+      <option name="time" value="19" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/dist/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dist/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="58" column="0" selection-start="2692" selection-end="2692" vertical-scroll-proportion="0.0">
@@ -588,13 +599,6 @@
     <entry file="file://$PROJECT_DIR$/distribution/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="169" column="28" selection-start="5670" selection-end="5670" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="2044" selection-end="2044" vertical-scroll-proportion="0.65254235">
           <folding />
         </state>
       </provider>
@@ -646,13 +650,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/distribution/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="169" column="28" selection-start="5670" selection-end="5670" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignores">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="5" selection-start="12" selection-end="12" vertical-scroll-proportion="0.020531401">
@@ -660,9 +657,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/distribution/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="44" selection-start="1595" selection-end="1595" vertical-scroll-proportion="-3.0053957">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="26" selection-start="887" selection-end="887" vertical-scroll-proportion="0.67266184">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/service_add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="10" selection-start="2662" selection-end="2662" vertical-scroll-proportion="-18.961538">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dist/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="5" selection-start="2627" selection-end="2627" vertical-scroll-proportion="0.8152174">
+        <state line="53" column="26" selection-start="2620" selection-end="2620" vertical-scroll-proportion="0.531401">
           <folding>
             <element signature="e#144#155#0" expanded="true" />
           </folding>
