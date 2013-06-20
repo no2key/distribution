@@ -6,6 +6,7 @@
 # **************************************
 
 import time
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -14,30 +15,36 @@ from dist.tasks import invoke_shell
 from dist.models import *
 
 
+@login_required
 def distribution(request):
     services = Service.objects.all()
     return render(request, 'service_distribution.html', {'services': services})
 
 
+@login_required
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
     svn_config = SVN_PREFIX + '/config/' + service.svn_config_path
     svn_code = SVN_PREFIX + '/code/' + service.svn_package_path
     prepare_temp_dir = "PATH=$PATH:/cygdrive/c/\"Program Files\"/TortoiseSVN/bin;" \
                        "DATE=`date +%s`; " \
-                       "mkdir /home/Administrator/publish/other/svn_tmp_$DATE/; " \
-                       "mkdir /home/Administrator/publish/other/svn_tmp_$DATE/code/; " \
-                       "mkdir /home/Administrator/publish/other/svn_tmp_$DATE/config/;"
-    checkout_config = "cd /home/Administrator/publish/other/svn_tmp_$DATE/config/; " \
-                      "svn checkout %s --username=%s --password=%s;" % (svn_config, SVN_USERNAME, SVN_PASSWORD)
-    checkout_code = "cd /home/Administrator/publish/other/svn_tmp_$DATE/code/; " \
-                    "svn checkout %s --username=%s --password=%s;" % (svn_code, SVN_USERNAME, SVN_PASSWORD)
-    code_destination = "cp /home/Administrator/publish/other/svn_tmp_$DATE%s/* %s;" % (service.svn_package_path, service.execute_machine)
-    config_destination = "cp /home/Administrator/publish/other/svn_tmp_$DATE%s/* %s;" % (service.svn_config_path, service.execute_machine)
-    clean = "rm -r /home/Administrator/publish/other/svn_tmp_$DATE/;"
+                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/; " \
+                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
+                       "mkdir /cygdrive/e/Publish/svntemp/other/svn_tmp_$DATE/config/;"
+    checkout_config = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/; " \
+                      "svn checkout %s --username=%s --password=%s;" % \
+                      (svn_config, SVN_USERNAME, SVN_PASSWORD)
+    checkout_code = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
+                    "svn checkout %s --username=%s --password=%s;" % \
+                    (svn_code, SVN_USERNAME, SVN_PASSWORD)
+    code_destination = "cp /cygdrive/e/Publish/svntemp/svn_tmp_$DATE%s/* /cygdrive/e/Publish/%s;" % \
+                       (service.svn_package_path, service.execute_machine)
+    config_destination = "cp /cygdrive/e/Publish/svntemp/svn_tmp_$DATE%s/* /cygdrive/e/Publish/%s;" % \
+                         (service.svn_config_path, service.execute_machine)
+    clean = "rm -r /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/;"
     svn_command = prepare_temp_dir + checkout_code + checkout_config + code_destination + config_destination + clean
     time_now = time.time()
-    script_name = "/home/Administrator/publish/other/temp_%s.sh" % time_now
+    script_name = "/cygdrive/e/Publish/svntemp/temp_%s.sh" % time_now
     temp_script = "echo \"%s\" >> %s; chmod +x %s" % (svn_command, script_name, script_name)
     invoke_shell.delay(temp_script)
     time.sleep(1)
@@ -52,15 +59,16 @@ def svn_pull(request, pk):
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
-        t_people="User",
+        t_people=request.user.username,
     )
     task.save()
     return HttpResponseRedirect('/task_queue/')
 
 
+@login_required
 def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_push = service.svc_push
+    svc_push = "/cygdrive/e/Publish/tools/" + service.svc_push
     result = invoke_shell.delay(svc_push)
     if not result.result:
         m_result = ""
@@ -72,15 +80,16 @@ def push_online(request, pk):
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
-        t_people="User",
+        t_people=request.user.username,
     )
     task.save()
     return HttpResponseRedirect('/task_queue/')
 
 
+@login_required
 def service_restart(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_restart = service.svc_restart
+    svc_restart = "/cygdrive/e/Publish/tools/" + service.svc_restart
     result = invoke_shell.delay(svc_restart)
     if not result.result:
         m_result = ""
@@ -92,7 +101,7 @@ def service_restart(request, pk):
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
-        t_people="User",
+        t_people=request.user.username,
     )
     task.save()
     return HttpResponseRedirect('/task_queue/')

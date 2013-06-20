@@ -2,10 +2,12 @@
   <dictionary name="shuangluo">
     <words>
       <w>amqp</w>
+      <w>cygdrive</w>
       <w>dropdown</w>
       <w>mkdir</w>
       <w>navbar</w>
       <w>shuangluo</w>
+      <w>svntemp</w>
     </words>
   </dictionary>
 </component>

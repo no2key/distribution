@@ -6,7 +6,7 @@
     </script>
 {% endblock %}
 {% block content %}
-    <div class="container-fluid offset4">
+    <div class="container-fluid offset3">
         <div class="well well-small text-center">
                 <h3>ERP服务发布</h3>
         </div>
@@ -32,8 +32,16 @@
                             {%endfor%}
                         </td>
                         <td> <a class="btn btn-info" href="/svn_pull/{{ item.id }}">拉取新版</a> </td>
-                        <td> <a class="btn btn-info" href="/push_online/{{ item.id }}">推送上线</a> </td>
-                        <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启{{item.svc_name}}服务</a> </td>
+                        {% if item.svc_push != "" %}
+                            <td> <a class="btn btn-info" href="/push_online/{{ item.id }}">推送上线</a> </td>
+                        {% else %}
+                            <td> <a class="btn btn-info disabled" href="javascript:void(0);">推送上线</a> </td>
+                        {% endif %}
+                        {% if item.svc_restart != "" %}
+                            <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启{{item.svc_name}}服务</a> </td>
+                        {% else %}
+                            <td> <a class="btn btn-info disabled" href="javascript:void(0);">重启{{item.svc_name}}服务</a> </td>
+                        {% endif %}
                 {% endfor %}
             </table>
             {% else %}
