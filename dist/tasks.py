@@ -20,7 +20,7 @@ def invoke_shell(shell_path):
     _, out, _ = client.exec_command(shell_path)
     output = []
     for line in out:
-        if len(output) > 9:
+        if len(output) > 19:
             output.pop(0)
         output.append(line)
     result = ''.join(output)

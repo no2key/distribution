@@ -18,12 +18,8 @@
     </script>
 {% endblock %}
 {% block content %}
-    <div id="content" class="container-fluid offset3">
-        <div class="well well-small text-center">
-            <h3>查看任务队列</h3>
-            <div><input type="checkbox" value="yes" name="scroll" /> 停止自动刷新</div>
-        </div>
-        <div id="ajax"></div>
+    <div id="content" class="container-fluid offset2">
+        <div id="ajax" class="container-fluid"></div>
         <div >
             <ul class="pager">
                 {% if page_obj.has_previous %}
@@ -39,5 +35,6 @@
                 {% endif %}
             </ul>
         </div>
+        <div><input type="checkbox" value="yes" name="scroll" /> 停止自动刷新</div>
     </div>
 {% endblock %}

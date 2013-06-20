@@ -6,24 +6,24 @@
     </script>
 {% endblock %}
 {% block content %}
-    <div class="container-fluid offset3">
-        <div class="well well-small text-center">
-                <h3>ERP服务发布</h3>
-        </div>
+    <div class="container-fluid offset2">
+
         <div class="container-fluid">
             {% if services %}
             <table class="table table-striped table-hover table-bordered">
-                {% for item in services %}
-                    <thead>
+                <thead>
                         <th> 服务名称 </th>
+                        <th> 编辑 </th>
                         <th> 分类 </th>
                         <th> 服务器 </th>
                         <th> SVN拉取 </th>
                         <th> 推送上线 </th>
                         <th> 重启服务 </th>
                     </thead>
+                {% for item in services %}
                     <tbody>
                         <td> {{item.svc_name}} </td>
+                        <td> <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a> </td>
                         <td> {{item.category}} </td>
                         <td> 
                             {% for m in item.server_list.all %}
@@ -38,9 +38,9 @@
                             <td> <a class="btn btn-info disabled" href="javascript:void(0);">推送上线</a> </td>
                         {% endif %}
                         {% if item.svc_restart != "" %}
-                            <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启{{item.svc_name}}服务</a> </td>
+                            <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启服务</a> </td>
                         {% else %}
-                            <td> <a class="btn btn-info disabled" href="javascript:void(0);">重启{{item.svc_name}}服务</a> </td>
+                            <td> <a class="btn btn-info disabled" href="javascript:void(0);">重启服务</a> </td>
                         {% endif %}
                 {% endfor %}
             </table>

@@ -31,7 +31,7 @@ class ajax_queue(ListView):
     model = TaskModel
     context_object_name = "tasks"
     template_name = 'ajax_queue.html'
-    paginate_by = 10
+    paginate_by = 30
 
     def dispatch(self, request, *args, **kwargs):
         pending = list(TaskModel.objects.filter(t_status="PENDING"))

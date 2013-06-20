@@ -26,28 +26,23 @@ def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
     svn_config = SVN_PREFIX + '/config/' + service.svn_config_path
     svn_code = SVN_PREFIX + '/code/' + service.svn_package_path
-    prepare_temp_dir = "PATH=$PATH:/cygdrive/c/\"Program Files\"/TortoiseSVN/bin;" \
-                       "DATE=`date +%s`; " \
+    prepare_temp_dir = "DATE=`date +%s`; " \
                        "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/; " \
                        "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/other/svn_tmp_$DATE/config/;"
+                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/;"
     checkout_config = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/; " \
-                      "svn checkout %s --username=%s --password=%s;" % \
+                      "/cygdrive/c/\"Program Files\"/TortoiseSVN/bin/svn checkout %s --username=%s --password=%s;" % \
                       (svn_config, SVN_USERNAME, SVN_PASSWORD)
     checkout_code = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
-                    "svn checkout %s --username=%s --password=%s;" % \
+                    "/cygdrive/c/\"Program Files\"/TortoiseSVN/bin/svn checkout %s --username=%s --password=%s;" % \
                     (svn_code, SVN_USERNAME, SVN_PASSWORD)
-    code_destination = "cp /cygdrive/e/Publish/svntemp/svn_tmp_$DATE%s/* /cygdrive/e/Publish/%s;" % \
+    chmod = "chmod -R 777 /cygdrive/e/Publish/svntemp/svn_tmp_$DATE;"
+    code_destination = "rsync -av --exclude=.svn /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/%s/ /cygdrive/e/Publish/%s/;" % \
                        (service.svn_package_path, service.execute_machine)
-    config_destination = "cp /cygdrive/e/Publish/svntemp/svn_tmp_$DATE%s/* /cygdrive/e/Publish/%s;" % \
+    config_destination = "rsync -av --exclude=.svn /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/%s/ /cygdrive/e/Publish/%s/;" % \
                          (service.svn_config_path, service.execute_machine)
     clean = "rm -r /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/;"
-    svn_command = prepare_temp_dir + checkout_code + checkout_config + code_destination + config_destination + clean
-    time_now = time.time()
-    script_name = "/cygdrive/e/Publish/svntemp/temp_%s.sh" % time_now
-    temp_script = "echo \"%s\" >> %s; chmod +x %s" % (svn_command, script_name, script_name)
-    invoke_shell.delay(temp_script)
-    time.sleep(1)
+    svn_command = prepare_temp_dir + checkout_code + checkout_config + chmod + code_destination + config_destination #+ clean
     result = invoke_shell.delay(svn_command)
     if not result.result:
         m_result = ""
@@ -68,7 +63,7 @@ def svn_pull(request, pk):
 @login_required
 def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_push = "/cygdrive/e/Publish/tools/" + service.svc_push
+    svc_push = "cd /cygdrive/e/Publish/tools/; pwd; ./" + service.svc_push + " 2>&1"
     result = invoke_shell.delay(svc_push)
     if not result.result:
         m_result = ""
@@ -89,7 +84,7 @@ def push_online(request, pk):
 @login_required
 def service_restart(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_restart = "/cygdrive/e/Publish/tools/" + service.svc_restart
+    svc_restart = "cd /cygdrive/e/Publish/tools/; pwd; ./" + service.svc_restart + " 2>&1"
     result = invoke_shell.delay(svc_restart)
     if not result.result:
         m_result = ""
@@ -111,7 +106,7 @@ class TaskQueue(ListView):
     model = TaskModel
     context_object_name = "tasks"
     template_name = 'task_queue.html'
-    paginate_by = 10
+    paginate_by = 30
 
     def get_queryset(self, *args, **kwargs):
         queryset = TaskModel.objects.order_by('-t_time')
@@ -122,7 +117,7 @@ class ServiceList(ListView):
     model = Service
     context_object_name = 'svc'
     template_name = 'service_list.html'
-    paginate_by = 10
+    paginate_by = 30
 
 
 class ServiceAdd(CreateView):
@@ -147,7 +142,7 @@ class ServiceCategoryList(ListView):
     model = ServiceCategory
     context_object_name = 'category'
     template_name = 'service_category_list.html'
-    paginate_by = 10
+    paginate_by = 30
 
 
 class ServiceCategoryAdd(CreateView):
@@ -172,7 +167,7 @@ class ServerList(ListView):
     model = Server
     context_object_name = 'server'
     template_name = 'server_list.html'
-    paginate_by = 10
+    paginate_by = 30
 
 
 class ServerAdd(CreateView):
