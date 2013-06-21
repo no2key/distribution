@@ -5,11 +5,11 @@
 # Created: 13-6-9 上午10:22
 # **************************************
 
-import time
+import os
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from distribution.settings import SVN_PREFIX, SVN_PASSWORD, SVN_USERNAME
 from dist.tasks import invoke_shell
 from dist.models import *
@@ -17,7 +17,7 @@ from dist.models import *
 
 @login_required
 def distribution(request):
-    services = Service.objects.all()
+    services = Service.objects.all().order_by('svc_name')
     return render(request, 'service_distribution.html', {'services': services})
 
 
@@ -63,7 +63,7 @@ def svn_pull(request, pk):
 @login_required
 def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_push = "cd /cygdrive/e/Publish/tools/; pwd; ./" + service.svc_push + " 2>&1"
+    svc_push = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_push + " 2>&1"
     result = invoke_shell.delay(svc_push)
     if not result.result:
         m_result = ""
@@ -84,7 +84,7 @@ def push_online(request, pk):
 @login_required
 def service_restart(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_restart = "cd /cygdrive/e/Publish/tools/; pwd; ./" + service.svc_restart + " 2>&1"
+    svc_restart = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_restart + " 2>&1"
     result = invoke_shell.delay(svc_restart)
     if not result.result:
         m_result = ""
@@ -100,6 +100,25 @@ def service_restart(request, pk):
     )
     task.save()
     return HttpResponseRedirect('/task_queue/')
+
+
+def view_log(request):
+    if request.method == "POST":
+        f_name = 'log/%s' % request.POST['filename']
+        try:
+            f = open(f_name)
+            log_content = f.read().decode('gbk')
+            #TODO: use chardet instead of hard code
+            log_content = log_content.replace('\n', '<br />')
+            return HttpResponse(log_content)
+        except:
+            return HttpResponse("ERROR OPENING %s" % f_name)
+    else:
+        LOGS = os.popen("ls log/")
+        log_list = []
+        for log in LOGS:
+            log_list.append(log.strip())
+        return render(request, 'view_log.html', {'logs': log_list})
 
 
 class TaskQueue(ListView):

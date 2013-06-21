@@ -2,6 +2,7 @@
   <dictionary name="shuangluo">
     <words>
       <w>amqp</w>
+      <w>csrf</w>
       <w>cygdrive</w>
       <w>dropdown</w>
       <w>mkdir</w>
