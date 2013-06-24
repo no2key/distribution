@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import admin
 admin.autodiscover()
 
-from dist import views, ajax, auth
+from dist import views, execute, ajax, auth
 
 urlpatterns = patterns('',
 
@@ -14,11 +14,12 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', auth.login),
     url(r'^accounts/logout/$', auth.logout),
 
+    url(r'svn_pull/(?P<pk>\d+)', execute.svn_pull, name='svn_pull'),
+    url(r'push_online/(?P<pk>\d+)', execute.push_online, name='push_online'),
+    url(r'service_restart/(?P<pk>\d+)', execute.service_restart, name='service_restart'),
+
     url(r'^$', views.distribution, name='index'),
     url(r'service_distribution/', views.distribution, name='service_distribution'),
-    url(r'svn_pull/(?P<pk>\d+)', views.svn_pull, name='svn_pull'),
-    url(r'push_online/(?P<pk>\d+)', views.push_online, name='push_online'),
-    url(r'service_restart/(?P<pk>\d+)', views.service_restart, name='service_restart'),
     url(r'task_queue/', login_required(views.TaskQueue.as_view()), name='task_queue'),
     url(r'refresh_queue/', ajax.refresh_task_queue, name='refresh_queue'),
     url(r'ajax_queue/', login_required(ajax.ajax_queue.as_view()), name='ajax_queue'),

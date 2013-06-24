@@ -8,10 +8,8 @@
 import os
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
-from distribution.settings import SVN_PREFIX, SVN_PASSWORD, SVN_USERNAME
-from dist.tasks import invoke_shell
+from django.shortcuts import render
+from django.http import HttpResponse
 from dist.models import *
 
 
@@ -21,94 +19,16 @@ def distribution(request):
     return render(request, 'service_distribution.html', {'services': services})
 
 
-@login_required
-def svn_pull(request, pk):
-    service = get_object_or_404(Service, pk=pk)
-    svn_config = SVN_PREFIX + '/config/' + service.svn_config_path
-    svn_code = SVN_PREFIX + '/code/' + service.svn_package_path
-    prepare_temp_dir = "DATE=`date +%s`; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/;"
-    checkout_config = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/; " \
-                      "/cygdrive/c/\"Program Files\"/TortoiseSVN/bin/svn checkout %s --username=%s --password=%s;" % \
-                      (svn_config, SVN_USERNAME, SVN_PASSWORD)
-    checkout_code = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
-                    "/cygdrive/c/\"Program Files\"/TortoiseSVN/bin/svn checkout %s --username=%s --password=%s;" % \
-                    (svn_code, SVN_USERNAME, SVN_PASSWORD)
-    chmod = "chmod -R 777 /cygdrive/e/Publish/svntemp/svn_tmp_$DATE;"
-    code_destination = "rsync -av --exclude=.svn /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/%s/ /cygdrive/e/Publish/%s/;" % \
-                       (service.svn_package_path, service.execute_machine)
-    config_destination = "rsync -av --exclude=.svn /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/%s/ /cygdrive/e/Publish/%s/;" % \
-                         (service.svn_config_path, service.execute_machine)
-    clean = "rm -r /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/;"
-    svn_command = prepare_temp_dir + checkout_code + checkout_config + chmod + code_destination + config_destination #+ clean
-    result = invoke_shell.delay(svn_command)
-    if not result.result:
-        m_result = ""
-    else:
-        m_result = result.result
-    task = TaskModel(
-        t_service=service,
-        t_content="SVN拉取新版本",
-        t_task_id=result.id,
-        t_status=result.status,
-        t_result=m_result,
-        t_people=request.user.username,
-    )
-    task.save()
-    return HttpResponseRedirect('/task_queue/')
-
-
-@login_required
-def push_online(request, pk):
-    service = get_object_or_404(Service, pk=pk)
-    svc_push = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_push + " 2>&1"
-    result = invoke_shell.delay(svc_push)
-    if not result.result:
-        m_result = ""
-    else:
-        m_result = result.result
-    task = TaskModel(
-        t_service=service,
-        t_content="推送上线",
-        t_task_id=result.id,
-        t_status=result.status,
-        t_result=m_result,
-        t_people=request.user.username,
-    )
-    task.save()
-    return HttpResponseRedirect('/task_queue/')
-
-
-@login_required
-def service_restart(request, pk):
-    service = get_object_or_404(Service, pk=pk)
-    svc_restart = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_restart + " 2>&1"
-    result = invoke_shell.delay(svc_restart)
-    if not result.result:
-        m_result = ""
-    else:
-        m_result = result.result
-    task = TaskModel(
-        t_service=service,
-        t_content="重启服务",
-        t_task_id=result.id,
-        t_status=result.status,
-        t_result=m_result,
-        t_people=request.user.username,
-    )
-    task.save()
-    return HttpResponseRedirect('/task_queue/')
-
-
 def view_log(request):
     if request.method == "POST":
         f_name = 'log/%s' % request.POST['filename']
         try:
             f = open(f_name)
-            log_content = f.read().decode('gbk')
-            #TODO: use chardet instead of hard code
+            log_content = f.read()
+            f.close()
+            import chardet
+            log_encoding = chardet.detect(log_content)['encoding']
+            log_content = log_content.decode(log_encoding)
             log_content = log_content.replace('\n', '<br />')
             return HttpResponse(log_content)
         except:
