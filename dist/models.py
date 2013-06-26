@@ -20,6 +20,9 @@ class Service(models.Model):
 class ServiceCategory(models.Model):
     category_name = models.CharField(max_length=100, verbose_name="分类名称")
 
+    class Meta:
+        ordering = ['category_name']
+
     def __unicode__(self):
         return self.category_name
 

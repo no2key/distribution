@@ -34,23 +34,43 @@
                     </tr>
                     <tr>
                         <th><label for="id_svn_package_path">SVN包路径:</label></th>
-                        <td>http://192.168.2.140:8080/svn/publish/code/ {{ form.svn_package_path}}{{ form.svn_package_path.errors }}</td>
+                        <td>
+                            <div class="input-prepend">
+                                <span class="add-on">http://192.168.2.140:8080/svn/publish/code/</span> {{ form.svn_package_path}}
+                            </div>{{ form.svn_package_path.errors }}
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="id_svn_config_path">SVN配置路径:</label></th>
-                        <td>http://192.168.2.140:8080/svn/publish/config/ {{ form.svn_config_path}}{{ form.svn_config_path.errors }}</td>
+                        <td>
+                            <div class="input-prepend">
+                                <span class="add-on">http://192.168.2.140:8080/svn/publish/config/</span> {{ form.svn_config_path}}
+                            </div>{{ form.svn_config_path.errors }}
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="id_execute_machine">发布机路径:</label></th>
-                        <td>/cygdrive/e/Publish/ {{ form.execute_machine}}{{ form.execute_machine.errors }}</td>
+                        <td>
+                            <div class="input-prepend">
+                                <span class="add-on">/cygdrive/e/Publish/</span> {{ form.execute_machine}}
+                            </div>{{ form.execute_machine.errors }}
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="id_svc_push">推送脚本路径:</label></th>
-                        <td>/cygdrive/e/Publish/tools/ {{ form.svc_push}}{{ form.svc_push.errors }}</td>
+                        <td>
+                            <div class="input-prepend">
+                                <span class="add-on">/cygdrive/e/Publish/tools/</span> {{ form.svc_push}}
+                            </div>{{ form.svc_push.errors }}
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="id_svc_restart">服务重启脚本路径:</label></th>
-                        <td>/cygdrive/e/Publish/tools/ {{ form.svc_restart}}{{ form.svc_restart.errors }}</td>
+                        <td>
+                            <div class="input-prepend">
+                                <span class="add-on">/cygdrive/e/Publish/tools/</span> {{ form.svc_restart}}
+                            </div>{{ form.svc_restart.errors }}
+                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -19,6 +19,7 @@ def distribution(request):
     return render(request, 'service_distribution.html', {'services': services})
 
 
+@login_required
 def view_log(request):
     if request.method == "POST":
         f_name = 'log/%s' % request.POST['filename']
@@ -54,6 +55,7 @@ class TaskQueue(ListView):
 
 class ServiceList(ListView):
     model = Service
+    queryset = Service.objects.order_by('svc_name')
     context_object_name = 'svc'
     template_name = 'service_list.html'
     paginate_by = 30

@@ -92,3 +92,25 @@ def service_restart(request, pk):
     )
     task.save()
     return HttpResponseRedirect('/task_queue/')
+
+
+@login_required
+def service_independent(request):
+    service = get_object_or_404(Service, svc_name='Z_Independent_Scripts')
+    script_name = request.POST['script']
+    script_to_run = "cd /cygdrive/e/Publish/tools/; ./" + script_name + " 2>&1"
+    result = invoke_shell.delay(script_to_run)
+    if not result.result:
+        m_result = ""
+    else:
+        m_result = result.result
+    task = TaskModel(
+        t_service=service,
+        t_content="执行独立脚本",
+        t_task_id=result.id,
+        t_status=result.status,
+        t_result=m_result,
+        t_people=request.user.username,
+    )
+    task.save()
+    return HttpResponseRedirect('/task_queue/')

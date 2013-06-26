@@ -16,35 +16,44 @@
                         <th> 服务名称 </th>
                         <th> 分类 </th>
                         <th> 服务器 </th>
-                        <th> SVN包 </th>
-                        <th> SVN配置 </th>
-                        <th> 发布机路径 </th>
-                        <th> 推送脚本 </th>
-                        <th> 重启脚本 </th>
-                        <th> 编辑 </th>
+                        <th colspan="2"> 配置 </th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in svc %}
-                    <tr>
-                        <td>{{ item.svc_name }}</td>
-                        <td>{{ item.category }}</td>
-                        <td>
+                        <td rowspan="6">
+                            <h4>{{ item.svc_name }}</h4>
+                            <br />
+                            <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a>
+                            <a class="btn btn-danger" href="/service_delete/{{ item.id }}">删除</a>
+                        </td>
+                        <td rowspan="6">{{ item.category }}</td>
+                        <td rowspan="6">
                             {% for m in item.server_list.all %}
                                     {{ m.ip }}
                                     <br />
                             {%endfor%}
                         </td>
-                        <td>{{ item.svn_package_path }}</td>
-                        <td>{{ item.svn_config_path }}</td>
-                        <td>{{ item.execute_machine }}</td>
-                        <td>{{ item.svc_push }}</td>
-                        <td>{{ item.svc_restart }}</td>
-                        <td>
-                            <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a>
-                            <a class="btn btn-danger" href="/service_delete/{{ item.id }}">删除</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>SVN包</td>
+                            <td>{{ item.svn_package_path }}</td>
+                        </tr>
+                        <tr>
+                            <td>SVN配置</td>
+                            <td>{{ item.svn_config_path }}</td>
+                        </tr>
+                        <tr>
+                            <td>发布机路径</td>
+                            <td>{{ item.execute_machine }}</td>
+                        </tr>
+                        <tr>
+                            <td>推送脚本</td>
+                            <td>{{ item.svc_push }}</td>
+                        </tr>
+                        <tr>
+                            <td>重启脚本</td>
+                            <td>{{ item.svc_restart }}</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
