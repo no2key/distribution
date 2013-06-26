@@ -9,33 +9,29 @@ from distribution.settings import SVN_PREFIX, SVN_PASSWORD, SVN_USERNAME
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from dist.tasks import invoke_shell
+from dist.tasks import invoke_shell_remote, invoke_shell_local
 from dist.models import *
 
 
 @login_required
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svn_config = SVN_PREFIX + '/config/' + service.svn_config_path
-    svn_code = SVN_PREFIX + '/code/' + service.svn_package_path
-    prepare_temp_dir = "DATE=`date +%s`; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
-                       "mkdir /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/;"
-    checkout_config = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/; " \
-                      "/cygdrive/c/\"Program Files\"/TortoiseSVN/bin/svn checkout %s --username=%s --password=%s;" % \
-                      (svn_config, SVN_USERNAME, SVN_PASSWORD)
-    checkout_code = "cd /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/; " \
-                    "/cygdrive/c/\"Program Files\"/TortoiseSVN/bin/svn checkout %s --username=%s --password=%s;" % \
-                    (svn_code, SVN_USERNAME, SVN_PASSWORD)
-    chmod = "chmod -R 777 /cygdrive/e/Publish/svntemp/svn_tmp_$DATE;"
-    code_destination = "rsync -av --exclude=.svn /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/code/%s/ " \
-                       "/cygdrive/e/Publish/%s/;" % (service.svn_package_path, service.execute_machine)
-    config_destination = "rsync -av --exclude=.svn /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/config/%s/ " \
-                         "/cygdrive/e/Publish/%s/;" % (service.svn_config_path, service.execute_machine)
-    clean = "rm -r /cygdrive/e/Publish/svntemp/svn_tmp_$DATE/;"
-    svn_command = prepare_temp_dir + checkout_code + checkout_config + chmod + code_destination + config_destination #+ clean
-    result = invoke_shell.delay(svn_command)
+    update_code = "cd /home/svnroot/code/%s; svn update --username=%s --password=%s;" % \
+                  (service.svn_package_path, SVN_USERNAME, SVN_PASSWORD)
+    update_config = "cd /home/svnroot/config/%s; svn update --username=%s --password=%s;" % \
+                    (service.svn_config_path, SVN_USERNAME, SVN_PASSWORD)
+    chmod = "chmod -R 777 /home/svnroot/code/%s; chmod -R 777 /home/svnroot/config/%s;" % \
+            (service.svn_package_path, service.svn_config_path)
+    prepare_temp_dir = "DATE=`date +%s`; mkdir /home/code_config_merge/tmp_$DATE/; "
+    code_merge = "rsync -av --exclude=.svn /home/svnroot/code/%s/ /home/code_config_merge/tmp_$DATE/;" % \
+                 service.svn_package_path
+    config_merge = "rsync -av --exclude=.svn /home/svnroot/config/%s/ /home/code_config_merge/tmp_$DATE/;" % \
+                   service.svn_config_path
+    rsync_140 = "rsync -e 'ssh -p 36000 -l Administrator' -azv --delete --exclude=.svn" \
+                " /home/code_config_merge/tmp_$DATE/ 192.168.2.140:/cygdrive/e/Publish/%s/;" % service.execute_machine
+    clean = "rm -rf /home/code_config_merge/tmp_$DATE/;"
+    svn_command = update_code + update_config + chmod + prepare_temp_dir + code_merge + config_merge + rsync_140 + clean
+    result = invoke_shell_local.delay(svn_command)
     if not result.result:
         m_result = ""
     else:
@@ -56,7 +52,7 @@ def svn_pull(request, pk):
 def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
     svc_push = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_push + " 2>&1"
-    result = invoke_shell.delay(svc_push)
+    result = invoke_shell_remote.delay(svc_push, ip='192.168.2.140', port=36000, username='Administrator')
     if not result.result:
         m_result = ""
     else:
@@ -77,7 +73,7 @@ def push_online(request, pk):
 def service_restart(request, pk):
     service = get_object_or_404(Service, pk=pk)
     svc_restart = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_restart + " 2>&1"
-    result = invoke_shell.delay(svc_restart)
+    result = invoke_shell_remote.delay(svc_restart, ip='192.168.2.140', port=36000, username='Administrator')
     if not result.result:
         m_result = ""
     else:
@@ -99,7 +95,7 @@ def service_independent(request):
     service = get_object_or_404(Service, svc_name='Z_Independent_Scripts')
     script_name = request.POST['script']
     script_to_run = "cd /cygdrive/e/Publish/tools/; ./" + script_name + " 2>&1"
-    result = invoke_shell.delay(script_to_run)
+    result = invoke_shell_remote.delay(script_to_run, ip='192.168.2.140', port=36000, username='Administrator')
     if not result.result:
         m_result = ""
     else:
