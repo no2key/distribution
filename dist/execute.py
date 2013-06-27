@@ -38,7 +38,7 @@ def svn_pull(request, pk):
         m_result = result.result
     task = TaskModel(
         t_service=service,
-        t_content="SVN拉取新版本",
+        t_content=u"SVN拉取新版本",
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
@@ -59,7 +59,7 @@ def push_online(request, pk):
         m_result = result.result
     task = TaskModel(
         t_service=service,
-        t_content="推送上线",
+        t_content=u"推送上线",
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
@@ -80,7 +80,7 @@ def service_restart(request, pk):
         m_result = result.result
     task = TaskModel(
         t_service=service,
-        t_content="重启服务",
+        t_content=u"重启服务",
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
@@ -102,7 +102,7 @@ def service_independent(request):
         m_result = result.result
     task = TaskModel(
         t_service=service,
-        t_content="执行独立脚本: /cygdrive/e/Publish/tools/%s" % script_name,
+        t_content=u"执行独立脚本: /cygdrive/e/Publish/tools/%s" % script_name,
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
