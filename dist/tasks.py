@@ -17,10 +17,9 @@ def invoke_shell_remote(shell_path, ip='192.168.2.140', port=36000, username='Ad
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(ip, port, username, password)
-    #client.connect('192.168.2.237', 22, username='root', password='redhat')
     _, out, _ = client.exec_command(shell_path)
     output = []
-    f_name = 'log/log_%s' % datetime.datetime.strftime(datetime.datetime.now(),"%Y-%m-%d_%H:%M:%S")
+    f_name = 'log/log_%s' % datetime.datetime.strftime(datetime.datetime.now(),"%Y-%m-%d_%H-%M-%S")
     f = open(f_name, 'w')
     for line in out:
         f.write(line)
@@ -37,7 +36,7 @@ def invoke_shell_remote(shell_path, ip='192.168.2.140', port=36000, username='Ad
 def invoke_shell_local(shell_path):
     out = os.popen(shell_path)
     output = []
-    f_name = 'log/log_%s' % datetime.datetime.strftime(datetime.datetime.now(),"%Y-%m-%d_%H:%M:%S")
+    f_name = 'log/log_%s' % datetime.datetime.strftime(datetime.datetime.now(),"%Y-%m-%d_%H-%M-%S")
     f = open(f_name, 'w')
     for line in out:
         f.write(line)

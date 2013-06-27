@@ -23,28 +23,30 @@
                     </tr>
                 </thead>
                 {% for item in services %}
-                    <tbody>
-                        <td> {{item.svc_name}} </td>
-                        <td> <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a> </td>
-                        <td> {{item.category}} </td>
-                        <td>
-                            {% for m in item.server_list.all %}
-                                    {{ m.ip }}
-                                    <br />
-                            {%endfor%}
-                        </td>
-                        <td> <a class="btn btn-info" href="/svn_pull/{{ item.id }}">拉取新版</a> </td>
-                        {% if item.svc_push != "" %}
-                            <td> <a class="btn btn-info" href="/push_online/{{ item.id }}">推送上线</a> </td>
-                        {% else %}
-                            <td> <a class="btn btn-info disabled" href="javascript:void(0);">推送上线</a> </td>
-                        {% endif %}
-                        {% if item.svc_restart != "" %}
-                            <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启服务</a> </td>
-                        {% else %}
-                            <td> <a class="btn btn-info disabled" href="javascript:void(0);">重启服务</a> </td>
-                        {% endif %}
-                    </tbody>
+                    {% if item.svc_name != 'Z_Independent_Scripts' %}
+                        <tbody>
+                            <td> {{item.svc_name}} </td>
+                            <td> <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a> </td>
+                            <td> {{item.category}} </td>
+                            <td>
+                                {% for m in item.server_list.all %}
+                                        {{ m.ip }}
+                                        <br />
+                                {%endfor%}
+                            </td>
+                            <td> <a class="btn btn-info" href="/svn_pull/{{ item.id }}">拉取新版</a> </td>
+                            {% if item.svc_push != "" %}
+                                <td> <a class="btn btn-info" href="/push_online/{{ item.id }}">推送上线</a> </td>
+                            {% else %}
+                                <td> <a class="btn btn-info disabled" href="javascript:void(0);">推送上线</a> </td>
+                            {% endif %}
+                            {% if item.svc_restart != "" %}
+                                <td> <a class="btn btn-info" href="/service_restart/{{ item.id }}">重启服务</a> </td>
+                            {% else %}
+                                <td> <a class="btn btn-info disabled" href="javascript:void(0);">重启服务</a> </td>
+                            {% endif %}
+                        </tbody>
+                    {% endif %}
                 {% endfor %}
             </table>
             {% else %}

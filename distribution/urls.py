@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 
     url(r'^$', views.distribution, name='index'),
     url(r'service_distribution/', views.distribution, name='service_distribution'),
+    url(r'independent_script/', views.independent_script, name='independent_script'),
     url(r'task_queue/', login_required(views.TaskQueue.as_view()), name='task_queue'),
     url(r'refresh_queue/', ajax.refresh_task_queue, name='refresh_queue'),
     url(r'ajax_queue/', login_required(ajax.ajax_queue.as_view()), name='ajax_queue'),

@@ -8,9 +8,11 @@
 import os
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib import messages
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from dist.models import *
+from execute import service_independent
 
 
 @login_required
@@ -40,6 +42,18 @@ def view_log(request):
         for log in LOGS:
             log_list.append(log.strip())
         return render(request, 'view_log.html', {'logs': log_list})
+
+
+@login_required
+def independent_script(request):
+    if request.method == "POST":
+        if request.POST['script'] == '':
+            error = "命令不能为空"
+            return render(request, 'service_independent_script.html', {'error': error})
+        service_independent(request)
+        return HttpResponseRedirect("/task_queue/")
+    else:
+        return render(request, 'service_independent_script.html')
 
 
 class TaskQueue(ListView):
