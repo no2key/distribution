@@ -23,9 +23,12 @@
                     {% for item in svc %}
                         <td rowspan="6">
                             <h4>{{ item.svc_name }}</h4>
-                            <br />
                             <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a>
                             <a class="btn btn-danger" href="/service_delete/{{ item.id }}">删除</a>
+                        {% if item.svc_note %}
+                            <br /><br />
+                                说明:&nbsp;{{ item.svc_note | linebreaks }}
+                        {% endif %}
                         </td>
                         <td rowspan="6">{{ item.category }}</td>
                         <td rowspan="6">

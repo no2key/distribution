@@ -10,7 +10,7 @@
 
         <div class="container-fluid">
             {% if services %}
-            <table id="distribution" class="table table-striped table-hover table-bordered">
+            <table id="distribution" class="table table-striped table-hover ">
                 <thead>
                     <tr>
                         <th> 服务名称 </th>
@@ -24,7 +24,7 @@
                 </thead>
                 {% for item in services %}
                     {% if item.svc_name != 'Z_Independent_Scripts' %}
-                        <tbody>
+                        <tr>
                             <td> {{item.svc_name}} </td>
                             <td> <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a> </td>
                             <td> {{item.category}} </td>
@@ -45,7 +45,14 @@
                             {% else %}
                                 <td> <a class="btn btn-info disabled" href="javascript:void(0);">重启服务</a> </td>
                             {% endif %}
-                        </tbody>
+                        </tr>
+                        {% if item.svc_note != "" %}
+                            <tr>
+                                <td colspan="7">
+                                    <div class="label label-warning container-fluid span12">{{ item.svc_note|linebreaks }}</div>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </table>
