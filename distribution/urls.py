@@ -40,4 +40,7 @@ urlpatterns = patterns('',
     url(r'server_edit/(?P<pk>\d+)', login_required(views.ServerEdit.as_view()), name='server_edit'),
     url(r'server_list/', login_required(views.ServerList.as_view()), name='server_list'),
     url(r'server_delete/(?P<pk>\d+)', login_required(views.ServerDelete.as_view()), name='server_delete'),
+
+    url(r'event_pull_list/', login_required(views.EventPullList.as_view()), name='event_pull_list'),
+    url(r'event_push_list/', login_required(views.EventPushList.as_view()), name='event_push_list'),
 )

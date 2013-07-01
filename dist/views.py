@@ -25,17 +25,17 @@ def distribution(request):
 def view_log(request):
     if request.method == "POST":
         f_name = 'log/%s' % request.POST['filename']
-        try:
-            f = open(f_name)
-            log_content = f.read()
-            f.close()
-            import chardet
-            log_encoding = chardet.detect(log_content)['encoding']
-            log_content = log_content.decode(log_encoding)
-            log_content = log_content.replace('\n', '<br />')
-            return HttpResponse(log_content)
-        except:
-            return HttpResponse("ERROR OPENING %s" % f_name)
+        #try:
+        f = open(f_name)
+        log_content = f.read()
+        f.close()
+        import chardet
+        log_encoding = chardet.detect(log_content)['encoding']
+        log_content = log_content.decode(log_encoding)
+        log_content = log_content.replace('\n', '<br />')
+        return HttpResponse(log_content)
+        #except:
+            #return HttpResponse("ERROR OPENING %s" % f_name)
     else:
         LOGS = os.popen("ls log/")
         log_list = []
@@ -60,7 +60,7 @@ class TaskQueue(ListView):
     model = TaskModel
     context_object_name = "tasks"
     template_name = 'task_queue.html'
-    paginate_by = 30
+    paginate_by = 50
 
     def get_queryset(self, *args, **kwargs):
         queryset = TaskModel.objects.order_by('-t_time')
@@ -72,7 +72,7 @@ class ServiceList(ListView):
     queryset = Service.objects.order_by('svc_name')
     context_object_name = 'svc'
     template_name = 'service_list.html'
-    paginate_by = 30
+    paginate_by = 50
 
 
 class ServiceAdd(CreateView):
@@ -97,7 +97,7 @@ class ServiceCategoryList(ListView):
     model = ServiceCategory
     context_object_name = 'category'
     template_name = 'service_category_list.html'
-    paginate_by = 30
+    paginate_by = 50
 
 
 class ServiceCategoryAdd(CreateView):
@@ -122,7 +122,7 @@ class ServerList(ListView):
     model = Server
     context_object_name = 'server'
     template_name = 'server_list.html'
-    paginate_by = 30
+    paginate_by = 50
 
 
 class ServerAdd(CreateView):
@@ -141,3 +141,17 @@ class ServerDelete(DeleteView):
     model = Server
     template_name = 'confirm_delete.html'
     success_url = '/server_list'
+
+
+class EventPullList(ListView):
+    model = EventPull
+    context_object_name = 'event_pull'
+    template_name = 'event_pull_list.html'
+    paginate_by = 50
+
+
+class EventPushList(ListView):
+    model = EventPush
+    context_object_name = 'event_push'
+    template_name = 'event_push_list.html'
+    paginate_by = 50

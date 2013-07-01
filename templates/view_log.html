@@ -2,7 +2,8 @@
 {% block title %}查看Log{% endblock %}
 {% block scripts %}
     <script type="text/javascript">
-        function view_log(file_name){
+        function view_log(s){
+            file_name = s.substring(s.lastIndexOf("/"));
             $.post("", {'filename': file_name, 'csrfmiddlewaretoken':'{{ csrf_token }}'})
                    .done(function(data){
                        $("#show_log").html(data);
