@@ -6,6 +6,7 @@
 # **************************************
 
 import os
+import re
 import datetime
 import paramiko
 from celery.task import task
@@ -13,7 +14,7 @@ from celery.result import AsyncResult
 
 
 @task
-def invoke_shell_remote(shell_path, ip='192.168.2.140', port=36000, username='Administrator', password=None):
+def invoke_shell_remote(shell_path, event=None, ip='192.168.2.140', port=36000, username='Administrator', password=None):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(ip, port, username, password)
@@ -28,12 +29,16 @@ def invoke_shell_remote(shell_path, ip='192.168.2.140', port=36000, username='Ad
         output.append(line)
     f.close()
     output.append("Log file: /home/distribution/%s" % f_name)
+    if event:
+        # For Push Online
+        event.push_log_name = "/home/distribution/" + f_name
+        event.save()
     result = ''.join(output)
     return result
 
 
 @task
-def invoke_shell_local(shell_path):
+def invoke_shell_local(shell_path, event=None):
     out = os.popen(shell_path)
     output = []
     f_name = 'log/log_%s' % datetime.datetime.strftime(datetime.datetime.now(),"%Y-%m-%d_%H-%M-%S")
@@ -45,6 +50,18 @@ def invoke_shell_local(shell_path):
         output.append(line)
     f.close()
     output.append("Log file: /home/distribution/%s" % f_name)
+    if event:
+        # For SVN Checkout
+        f = open(f_name, 'r')
+        content = f.read()
+        versions = re.findall('At revision (\d+)', content)
+        if len(versions) == 2:
+            re_code = versions[0]
+            re_config = versions[1]
+            event.pull_code_to = re_code
+            event.pull_config_to = re_config
+            event.pull_log_name = "/home/distribution/" + f_name
+            event.save()
     result = ''.join(output)
     return result
 
@@ -52,3 +69,8 @@ def invoke_shell_local(shell_path):
 def get_result(id_):
     result = AsyncResult(id_)
     return result
+
+
+def invoke_local_shell_no_task(shell):
+    out = os.popen(shell)
+    return out.read()

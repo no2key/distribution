@@ -58,6 +58,35 @@ class EventLog(models.Model):
         return self.log_content
 
 
+class EventPull(models.Model):
+    pull_service = models.ForeignKey('Service', verbose_name="服务")
+    pull_people = models.CharField(max_length=100, verbose_name="操作人")
+    pull_time = models.DateTimeField(auto_now=True, verbose_name="操作时间")
+    pull_code_from = models.CharField(max_length=10, verbose_name="旧代码版本")
+    pull_config_from = models.CharField(max_length=10, verbose_name="旧配置版本")
+    pull_code_to = models.CharField(max_length=10, default="", blank=True, verbose_name="新代码版本")
+    pull_config_to = models.CharField(max_length=10, default="", blank=True, verbose_name="新配置版本")
+    pull_log_name = models.CharField(max_length=50, verbose_name="拉取日志")
+    pull_note = models.CharField(max_length=500, default="", blank=True, verbose_name="备注")
+
+    def __unicode__(self):
+        return "Code:%s=>%s;Config:%s=>%s." % \
+               (self.pull_code_from, self.pull_code_to, self.pull_config_from, self.pull_config_to)
+
+
+class EventPush(models.Model):
+    push_service = models.ForeignKey('Service', verbose_name="服务")
+    push_people = models.CharField(max_length=100, verbose_name="操作人")
+    push_time = models.DateTimeField(auto_now=True, verbose_name="操作时间")
+    push_code = models.CharField(max_length=10, default="", blank=True, verbose_name="上线代码版本")
+    push_config = models.CharField(max_length=10, default="", blank=True, verbose_name="上线配置版本")
+    push_log_name = models.CharField(max_length=50, verbose_name="推送日志")
+    push_note = models.CharField(max_length=500, default="", blank=True, verbose_name="备注")
+
+    def __unicode__(self):
+        return "At Version: code %s, config %s." % (self.push_code, self.push_config)
+
+
 class TaskModel(models.Model):
     t_service = models.ForeignKey('Service', verbose_name="服务")
     t_content = models.CharField(max_length=500, verbose_name="执行操作")
