@@ -25,17 +25,17 @@ def distribution(request):
 def view_log(request):
     if request.method == "POST":
         f_name = 'log/%s' % request.POST['filename']
-        #try:
-        f = open(f_name)
-        log_content = f.read()
-        f.close()
-        import chardet
-        log_encoding = chardet.detect(log_content)['encoding']
-        log_content = log_content.decode(log_encoding)
-        log_content = log_content.replace('\n', '<br />')
-        return HttpResponse(log_content)
-        #except:
-            #return HttpResponse("ERROR OPENING %s" % f_name)
+        try:
+            f = open(f_name)
+            log_content = f.read()
+            f.close()
+            import chardet
+            log_encoding = chardet.detect(log_content)['encoding']
+            log_content = log_content.decode(log_encoding)
+            log_content = log_content.replace('\n', '<br />')
+            return HttpResponse(log_content)
+        except:
+            return HttpResponse("ERROR OPENING %s" % f_name)
     else:
         LOGS = os.popen("ls log/")
         log_list = []

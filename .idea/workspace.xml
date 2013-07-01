@@ -5,11 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/event_pull_list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/event_push_list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/navlist.html" afterPath="$PROJECT_DIR$/templates/navlist.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/distribution/urls.py" afterPath="$PROJECT_DIR$/distribution/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/view_log.html" afterPath="$PROJECT_DIR$/templates/view_log.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/views.py" afterPath="$PROJECT_DIR$/dist/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -50,7 +45,7 @@
     <file path="$PROJECT_DIR$/../django_platform/ldap/templates/operator/opuserclone.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371454943014" ignored="false" />
     <file path="$PROJECT_DIR$/../django_platform/ldap/templates/operator/opuseredit.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371454943014" ignored="false" />
     <file path="$PROJECT_DIR$/../django_platform/templates/invalid.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371455158817" ignored="false" />
-    <file path="/Dummy.txt" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1372670423472" ignored="false" />
+    <file path="/Dummy.txt" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1372679816756" ignored="false" />
     <file path="$PROJECT_DIR$/../django_platform/ldap/models.py" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371455783473" ignored="false" />
     <file path="/ajax_queue.html" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371535737984" ignored="false" />
     <file path="/.gitignores" changelist="edac3cbf-9c2a-485c-9d6a-1d037e9fe4bf" time="1371692888837" ignored="false" />
@@ -118,7 +113,7 @@
       <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dist/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="0" selection-start="1405" selection-end="1405" vertical-scroll-proportion="0.90338165">
+            <state line="38" column="9" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.7801932">
               <folding>
                 <element signature="e#144#153#0" expanded="true" />
               </folding>
@@ -540,7 +535,11 @@
       <created>1372670425239</created>
       <updated>1372670425239</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="日志展示">
+      <created>1372679818945</created>
+      <updated>1372679818945</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -629,7 +628,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="发布列表显示当前版本" />
+    <option name="LAST_COMMIT_MESSAGE" value="日志展示" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -660,6 +659,7 @@
     <MESSAGE value="svc_note字段允许为空" />
     <MESSAGE value="model新增对于svn拉取和rsync推送上线的日志记录&#10;尤其是版本号的记录，用于下一步的针对特定版本拉取和上线，回滚等。&#10;execute和tasks做了针对性改变，用来向日志表中写入数据。" />
     <MESSAGE value="发布列表显示当前版本" />
+    <MESSAGE value="日志展示" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -788,7 +788,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dist/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="0" selection-start="1405" selection-end="1405" vertical-scroll-proportion="0.90338165">
+        <state line="38" column="9" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.7801932">
           <folding>
             <element signature="e#144#153#0" expanded="true" />
           </folding>
