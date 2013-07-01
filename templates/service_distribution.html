@@ -25,7 +25,7 @@
                 {% for item in services %}
                     {% if item.svc_name != 'Z_Independent_Scripts' %}
                         <tr>
-                            <td> {{item.svc_name}} </td>
+                            <td> {{item.svc_name}} <span class="label label-success">{{ item.eventpush_set.all.0 }}</span></td>
                             <td> <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a> </td>
                             <td> {{item.category}} </td>
                             <td>

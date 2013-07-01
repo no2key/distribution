@@ -69,6 +69,9 @@ class EventPull(models.Model):
     pull_log_name = models.CharField(max_length=50, verbose_name="拉取日志")
     pull_note = models.CharField(max_length=500, default="", blank=True, verbose_name="备注")
 
+    class Meta:
+        ordering = ['-pull_time']
+
     def __unicode__(self):
         return "Code:%s=>%s;Config:%s=>%s." % \
                (self.pull_code_from, self.pull_code_to, self.pull_config_from, self.pull_config_to)
@@ -82,6 +85,9 @@ class EventPush(models.Model):
     push_config = models.CharField(max_length=10, default="", blank=True, verbose_name="上线配置版本")
     push_log_name = models.CharField(max_length=50, verbose_name="推送日志")
     push_note = models.CharField(max_length=500, default="", blank=True, verbose_name="备注")
+
+    class Meta:
+        ordering = ['-push_time']
 
     def __unicode__(self):
         return "At Version: code %s, config %s." % (self.push_code, self.push_config)
