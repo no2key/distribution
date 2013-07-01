@@ -12,7 +12,7 @@ class Service(models.Model):
     execute_machine = models.CharField(max_length=500, verbose_name="发布机路径")
     svc_push = models.CharField(max_length=500, verbose_name="推送脚本路径")
     svc_restart = models.CharField(max_length=500, verbose_name="服务重启脚本路径")
-    svc_note = models.CharField(max_length=2000, default="", verbose_name="备注")
+    svc_note = models.CharField(max_length=2000, default="", blank=True, verbose_name="备注")
 
     def __unicode__(self):
         return self.svc_name
