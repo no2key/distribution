@@ -54,13 +54,13 @@
         <div >
             <ul class="pager">
                 {% if page_obj.has_previous %}
-                    <li><a href="/event_pull_list/?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                    <li><a href="{% url 'event_pull_list' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
                 {% else %}
                     <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
                 {% endif %}
                     <li>第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }}页</li>
                 {% if page_obj.has_next %}
-                    <li><a href="/event_pull_list/?page={{ page_obj.next_page_number }}">下一页</a></li>
+                    <li><a href="{% url 'event_pull_list' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
                 {% else %}
                     <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
                 {% endif %}
