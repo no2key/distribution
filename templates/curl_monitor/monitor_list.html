@@ -32,8 +32,7 @@
                 <td>
                     <button type="button" class="btn btn-primary modify_monitor_item">修改</button>
                     <button type="button" class="btn btn-warning del_monitor_item">删除</button>
-                    <button type="button" class="btn btn-info"><a href="/curl/view_log_list?id={{ monitor_item.id }}">查看日志</a>
-                    </button>
+                    <button type="button" class="btn btn-info" onClick="javascript:location.href='/curl/view_log_list?id={{ monitor_item.id }}'">查看日志</button>
                 </td>
             </tr>
         {% endfor %}
