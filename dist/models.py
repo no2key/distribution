@@ -4,8 +4,14 @@ from django.db import models
 
 
 class Service(models.Model):
+    SVC_TYPE = (
+        ('IIS', 'IIS站点'),
+        ('Daemon', 'Daemon'),
+        ('SystemService', '系统服务'),
+    )
     svc_name = models.CharField(unique=True, max_length=100, verbose_name="服务名称")
     category = models.ForeignKey('ServiceCategory', verbose_name="服务分类")
+    svc_type = models.CharField(max_length=20, choices=SVC_TYPE, default='IIS站点', verbose_name="服务类型")
     server_list = models.ManyToManyField('Server', related_name='ServerList')
     svn_package_path = models.CharField(max_length=500, verbose_name="SVN包路径")
     svn_config_path = models.CharField(max_length=500, verbose_name="SVN配置路径")

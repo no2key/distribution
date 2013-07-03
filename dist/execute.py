@@ -40,7 +40,7 @@ def svn_pull(request, pk):
                  service.svn_package_path
     config_merge = "rsync -av --exclude=.svn /home/svnroot/config/%s/ /home/code_config_merge/tmp_$DATE/;" % \
                    service.svn_config_path
-    rsync_140 = "rsync -e 'ssh -p 36000 -l Administrator' -azv --delete --exclude=.svn" \
+    rsync_140 = "rsync -e 'ssh -p 36000 -l Administrator' -azv --exclude=.svn" \
                 " /home/code_config_merge/tmp_$DATE/ 192.168.2.140:/cygdrive/e/Publish/%s/;" % service.execute_machine
     clean = "rm -rf /home/code_config_merge/tmp_$DATE/;"
     svn_command = update_code + update_config + chmod + prepare_temp_dir + code_merge + config_merge + rsync_140 + clean

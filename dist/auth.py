@@ -24,7 +24,7 @@ def login(request):
         if form.is_valid():
             _login(request, form.cleaned_data["username"], form.cleaned_data["password"])
             return HttpResponseRedirect("/")
-    return render(request, "login.html", {'form': form})
+    return render(request, "dist/login.html", {'form': form})
 
 
 def _login(request,username,password):

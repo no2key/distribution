@@ -1,8 +1,16 @@
-{% extends "base.html" %}
-{% block title %}编辑ERP服务{% endblock %}
+{% extends "dist/base.html" %}
+{% block title %}新增ERP服务{% endblock %}
 {% block scripts %}
+    <script src="/static/dist/js/bootstrap-multiselect.js"></script>
+    <script src="/static/dist/js/common.js"></script>
     <script type="text/javascript">
-        $("#service_edit").addClass("active");
+        $("#service_add").addClass("active");
+        $('#id_server_list').multiselect({
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            buttonWidth: '220px'
+        });
+        $(".helptext").hide();
     </script>
 {% endblock %}
 {% block content %}
@@ -19,11 +27,25 @@
                     </tr>
                     <tr>
                         <th><label for="id_category">服务分类:</label></th>
-                        <td>{{ form.category}}{{ form.category.errors }}</td>
+                        <td>
+                            {{ form.category}}
+                            <button class="btn" onclick="return showAddAnotherPopup('/service_category_add/', '')">+</button>
+                            {{ form.category.errors }}
+                        </td>
                     </tr>
                     <tr>
-                        <th><label for="id_server_list">服务器列表:</label></th>
-                        <td>{{ form.server_list}}{{ form.server_list.errors }}</td>
+                        <th><label for="id_svc_type">服务类型:</label></th>
+                        <td>{{ form.svc_type}}{{ form.svc_type.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="id_server_list">服务器列表:</label>
+                        </th>
+                        <td>
+                            {{ form.server_list}}
+                            <button class="btn" onclick="return showAddAnotherPopup('/server_add/', '')">+</button>
+                            {{ form.server_list.errors }}
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="id_svn_package_path">SVN包路径:</label></th>
@@ -68,13 +90,13 @@
                     <tr>
                         <th><label for="id_svc_note">备注:</label></th>
                         <td>
-                            <textarea id="id_svc_note" cols="40" rows="3" name="svc_note" >{{ form.svc_note.value }}</textarea>
+                            <textarea id="id_svc_note" cols="40" rows="3" name="svc_note" ></textarea>
                         </td>
                     </tr>
                     </tbody>
                 </table>
                 <input class="btn btn-primary span2" type="submit" value="提交">
-                <a class="btn" href="javascript:history.back()">返回</a>
+                <a class="btn" href="/service_list">返回</a>
             </form>
     	</div>
     </div>

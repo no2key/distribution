@@ -15,9 +15,9 @@ DATABASES = {
         'NAME': 'dist',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
-        'PASSWORD': '06122553',
-        'HOST': '127.0.0.1',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',                      # Set to empty string for default.
+        'PASSWORD': '',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
     }
 }
 
@@ -69,7 +69,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    'D:\PycharmProjects\distribution\static',
+    'E:\python_docs\distribution\static',
+    #'/home/distribution/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -127,7 +128,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'djcelery',
     'dist',
-    'curl_monitor',
+	'curl_monitor',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -164,8 +165,8 @@ LOGGING = {
     }
 }
 
-#BROKER_URL = 'amqp://guest:guest@localhost:5672/'
-
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 SVN_PREFIX = 'http://192.168.2.140:8080/svn/publish'
 SVN_USERNAME = 'publishtest'
 SVN_PASSWORD = 'publishtest'
+
