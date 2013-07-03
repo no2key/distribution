@@ -21,6 +21,7 @@ $(function () {
     $("#add-monitor-item").on("click", function (e) {
         $("#url-to-monitor").val("");
         $("#monitor-or-not").children("option:selected").removeAttr("selected");
+        $(".ip-item>.icon-minus-sign").parent().remove();
         $("#modal-add-monitor-item").modal("show");
     });
 
@@ -51,6 +52,8 @@ $(function () {
         var monitor_or_not = parent.siblings(".monitor_or_not").children("option:selected").val();
 
         $("#url_to_monitor").val(url);
+
+        $("#ip_list").empty();
 
         var len = ip_list.length;
         for (var index = 0; index < len; index++) {
