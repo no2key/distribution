@@ -3,10 +3,10 @@
 		
 		<li class="nav-header">ERP服务发布</li>
 		<li id="service_distribution">
-			<a href = "/service_distribution"><i class="icon-home"></i> ERP服务发布</a>
+			<a href = "{% url 'service_distribution' %}"><i class="icon-home"></i> ERP服务发布</a>
 		</li>
         <li id="task_queue">
-            <a href = "/task_queue"><i class="icon-retweet"></i> 发布任务队列</a>
+            <a href = "{% url 'task_queue' %}"><i class="icon-retweet"></i> 发布任务队列</a>
         </li>
 	</ul>
 </div>
@@ -15,39 +15,39 @@
 		
 		<li class="nav-header">ERP服务信息</li>
 		<li id="service_list">
-			<a href = "/service_list"><i class="icon-list"></i> ERP服务列表</a>
+			<a href = "{% url 'service_list' %}"><i class="icon-list"></i> ERP服务列表</a>
 		</li>
         <li id="service_add">
-            <a href = "/service_add"><i class="icon-plus"></i> 新增ERP服务</a>
+            <a href = "{% url 'service_add' %}"><i class="icon-plus"></i> 新增ERP服务</a>
         </li>
 		<li class="divider"></li>
 
 		<li class="nav-header">ERP服务分类</li>
 		<li id="service_category_list">
-			<a href = "/service_category_list"><i class="icon-list"></i> 服务分类列表</a>
+			<a href = "{% url 'service_category_list' %}"><i class="icon-list"></i> 服务分类列表</a>
 		</li>
         <li id="service_category_add">
-            <a href = "/service_category_add"><i class="icon-plus"></i> 新增服务分类</a>
+            <a href = "{% url 'service_category_add' %}"><i class="icon-plus"></i> 新增服务分类</a>
         </li>
 		<li class="divider"></li>
 
         <li class="nav-header">服务器信息</li>
         <li id="server_list">
-            <a href = "/server_list"><i class="icon-list"></i> 服务器列表</a>
+            <a href = "{% url 'server_list' %}"><i class="icon-list"></i> 服务器列表</a>
         </li>
         <li id="server_add">
-            <a href = "/server_add"><i class="icon-plus"></i> 新增服务器</a>
+            <a href = "{% url 'server_add' %}"><i class="icon-plus"></i> 新增服务器</a>
         </li>
         <li id="last_nav" class="divider"></li>
         <li id="independent_script">
-            <a href = "/independent_script"><i class="icon-warning-sign"></i> 执行独立脚本</a>
+            <a href = "{% url 'independent_script' %}"><i class="icon-warning-sign"></i> 执行独立脚本</a>
         </li>
         <li id="last_nav" class="divider"></li>
         <li id="event_pull">
-            <a href = "/event_pull_list"><i class="icon-list"></i> SVN拉取日志</a>
+            <a href = "{% url 'event_pull_list' %}"><i class="icon-list"></i> SVN拉取日志</a>
         </li>
         <li id="event_push">
-            <a href = "/event_push_list"><i class="icon-list"></i> 推送上线日志</a>
+            <a href = "{% url 'event_push_list' %}"><i class="icon-list"></i> 推送上线日志</a>
         </li>
 	</ul>
 </div>
