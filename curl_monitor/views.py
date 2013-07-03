@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import *
 from django.db import transaction
-
+import os
 import json
 
 
@@ -82,3 +82,16 @@ def get_log_list(request):
     monitor_id = request.GET['id']
     log_list = MonitorLog.objects.filter(monitor_id=monitor_id)
     return render(request, 'curl_monitor/log_list.html', {'log_list': log_list})
+
+
+def get_log_content(request):
+    id = request.GET['id']
+    log_item = MonitorLog.objects.get(id=id)
+    log_path = log_item.log_path
+
+    if not os.path.exists(log_path):
+        log_content = u'未找到该日志文件'
+    else:
+        with open(log_path, 'r') as fh:
+            log_content = fh.read()
+    return HttpResponse(log_content)
