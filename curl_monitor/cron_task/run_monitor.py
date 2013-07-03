@@ -89,6 +89,8 @@ def main():
 
     monitor_list = get_monitor_list()
     for item in monitor_list:
+        if not item['monitor_or_not']:
+            continue
         url = item['url']
         url_pattern = r'^(http:\/\/)?([^\/]+)$'
         url_re_object = re.compile(url_pattern)
