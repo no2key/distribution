@@ -15,6 +15,7 @@ $(function () {
             'url': '/curl/view_log?id=' + logId
         });
         req.done(function (resp) {
+            resp = resp.replace(/\n/g, '<br />');
             $("#logContent").empty().html(resp);
             $("#modal_view_log").modal("show");
         });
