@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib import messages
 from django import forms
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
 
@@ -43,4 +44,4 @@ def _login(request,username,password):
 
 def logout(request):
     auth_logout(request)
-    return HttpResponseRedirect("/")
+    return HttpResponseRedirect(reverse("index"))
