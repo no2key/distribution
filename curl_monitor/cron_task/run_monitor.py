@@ -8,10 +8,10 @@ import hashlib
 import time
 import random
 import os
-import collections
+import datetime
 
 
-LOG_ROOT = '/'
+LOG_ROOT = '/home/distribution/log/curl_log/'
 
 
 class MySQL(object):
@@ -33,7 +33,7 @@ class Curl(object):
         self.curl.setopt(pycurl.HEADERFUNCTION, self.wf.write)
 
     def set_host_header(self, host):
-        self.curl.setopt(pycurl.HTTPHEADER, 'HOST:' + host)
+        self.curl.setopt(pycurl.HTTPHEADER, ['HOST:' + host])
 
     def curl_url(self, url):
         self.curl.setopt(pycurl.URL, url)
@@ -50,7 +50,7 @@ class Curl(object):
         }
 
 
-mysql_obj = MySQL(username='', password='', database='dist')
+mysql_obj = MySQL(username='root', password='redhat', database='dist')
 conn = mysql_obj.conn
 cursor = conn.cursor(cursorclass=mdb.cursors.DictCursor)
 
@@ -64,13 +64,24 @@ def get_monitor_list():
 
 
 def update_monitor_item(**args):
-    sql = "UPDATE curl_monitor_monitoritem SET error_count=%d AND last_status=%s WHERE id=%d"
-    cursor.execute(sql, (args['error_count'], args['last_status'], args['id']))
+    sql = "UPDATE curl_monitor_monitoritem SET error_count=%s, last_status='%s' WHERE id=%s" %(args['error_count'], args['last_status'], args['id'])
+    cursor.execute(sql)
 
 
 def insert_monitor_log(**args):
-    sql = "INSERT INTO curl_monitor_monitorlog (monitor_id, log_path) VALUES (%d, %s)"
-    cursor.execute(sql, (args['monitor_id'], args['log_path']))
+    sql = "INSERT INTO curl_monitor_monitorlog (monitor_id, log_path, datetime) VALUES (%s, '%s', '%s')" %(args['monitor_id'], args['log_path'], datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
+    cursor.execute(sql)
+
+
+def counter(data_list):
+    return_dict = {}
+    for data in data_list:
+        if data in return_dict:
+            return_dict[data] += 1
+        else:
+            return_dict[data] = 1
+
+    return return_dict
 
 
 def main():
@@ -94,27 +105,29 @@ def main():
             'error_info': '',
             'last_status': []
         }
+        this_run_error_count = 0
         for new_url in new_url_list:
             curl_obj.set_host_header(domain)
             result_dict = curl_obj.curl_url(new_url)
             result_to_store['last_status'].append(result_dict['http_code'])
             if result_dict['http_code'] != 200:
+                this_run_error_count += 1
                 result_to_store['error_count'] += 1
-                result_to_store['error_info'] += "\n\n" + '=' * 40 + '\n' + result_dict['response_header']
-        log_dir = hashlib.new('md5', url).hexdigest()[0:5]
-        log_file_name = 'log_' + str(time.time()) + '_' + str(random.randint(1000, 9999)) + '.log'
-        log_path = LOG_ROOT + log_dir + '/'
-        if not os.path.exists(log_path):
-            os.mkdir(log_path)
-        log_absolute_path = log_path + log_file_name
-        with open(log_absolute_path, 'w') as fh:
-            fh.write(result_to_store['error_info'])
+                result_to_store['error_info'] += '=' * 40 + '<br />' + result_dict['response_header']
+        if this_run_error_count > 0:
+            log_dir = hashlib.new('md5', url).hexdigest()[0:5]
+            log_file_name = 'log_' + str(time.time()) + '_' + str(random.randint(1000, 9999)) + '.log'
+            log_path = LOG_ROOT + log_dir + '/'
+            if not os.path.exists(log_path):
+                os.mkdir(log_path)
+            log_absolute_path = log_path + log_file_name
+            with open(log_absolute_path, 'w') as fh:
+                fh.write(result_to_store['error_info'])
+            insert_monitor_log(monitor_id=item['id'], log_path=log_absolute_path)
 
-        code_count_dict = collections.Counter(result_to_store['last_status'])
+        code_count_dict = counter(result_to_store['last_status'])
         last_status_info = ';'.join(['%s x %s' %(str(key), str(value)) for key, value in code_count_dict.iteritems()])
         update_monitor_item(id=item['id'], error_count=result_to_store['error_count'], last_status=last_status_info)
-
-        insert_monitor_log(monitor_id=item['id'], log_path=log_absolute_path)
 
         conn.commit()
 
