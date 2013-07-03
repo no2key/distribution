@@ -94,5 +94,4 @@ def get_log_content(request):
     else:
         with open(log_path, 'r') as fh:
             log_content = fh.read()
-            log_content = log_content.replace('\n', '<br />')
     return HttpResponse(log_content)
