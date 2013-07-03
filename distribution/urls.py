@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'task_queue/', login_required(views.TaskQueue.as_view()), name='task_queue'),
     url(r'refresh_queue/', ajax.refresh_task_queue, name='refresh_queue'),
     url(r'ajax_queue/', login_required(ajax.ajax_queue.as_view()), name='ajax_queue'),
-    url(r'view_log/', login_required(views.view_log), name='view_log'),
+    url(r'^view_log/', login_required(views.view_log), name='view_log'),
 
     url(r'service_add/', login_required(views.ServiceAdd.as_view()), name='service_add'),
     url(r'service_edit/(?P<pk>\d+)', login_required(views.ServiceEdit.as_view()), name='service_edit'),

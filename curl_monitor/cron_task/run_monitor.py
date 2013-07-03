@@ -27,7 +27,6 @@ class Curl(object):
         self.curl = pycurl.Curl()
         self.curl.setopt(pycurl.VERBOSE, 1)
         self.curl.setopt(pycurl.HEADER, 1)
-        self.curl.setopt(pycurl.NOBODY, 1)
         self.curl.setopt(pycurl.MAXREDIRS, 5)
         self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
         self.wf = StringIO.StringIO()
@@ -101,7 +100,7 @@ def main():
             result_to_store['last_status'].append(result_dict['http_code'])
             if result_dict['http_code'] != 200:
                 result_to_store['error_count'] += 1
-                result_to_store['error_info'] += "\n\n" + '=' * 80 + '\n' + result_dict['response_header']
+                result_to_store['error_info'] += "\n\n" + '=' * 40 + '\n' + result_dict['response_header']
         log_dir = hashlib.new('md5', url).hexdigest()[0:5]
         log_file_name = 'log_' + str(time.time()) + '_' + str(random.randint(1000, 9999)) + '.log'
         log_path = LOG_ROOT + log_dir + '/'
