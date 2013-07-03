@@ -18,7 +18,7 @@ from execute import service_independent
 @login_required
 def distribution(request):
     services = Service.objects.all().order_by('svc_name')
-    return render(request, 'service_distribution.html', {'services': services})
+    return render(request, 'dist/service_distribution.html', {'services': services})
 
 
 @login_required
@@ -41,7 +41,7 @@ def view_log(request):
         log_list = []
         for log in LOGS:
             log_list.append(log.strip())
-        return render(request, 'view_log.html', {'logs': log_list})
+        return render(request, 'dist/view_log.html', {'logs': log_list})
 
 
 @login_required
@@ -49,17 +49,17 @@ def independent_script(request):
     if request.method == "POST":
         if request.POST['script'] == '':
             error = "命令不能为空"
-            return render(request, 'service_independent_script.html', {'error': error})
+            return render(request, 'dist/service_independent_script.html', {'error': error})
         service_independent(request)
         return HttpResponseRedirect("/task_queue/")
     else:
-        return render(request, 'service_independent_script.html')
+        return render(request, 'dist/service_independent_script.html')
 
 
 class TaskQueue(ListView):
     model = TaskModel
     context_object_name = "tasks"
-    template_name = 'task_queue.html'
+    template_name = 'dist/task_queue.html'
     paginate_by = 50
 
     def get_queryset(self, *args, **kwargs):
@@ -71,87 +71,87 @@ class ServiceList(ListView):
     model = Service
     queryset = Service.objects.order_by('svc_name')
     context_object_name = 'svc'
-    template_name = 'service_list.html'
+    template_name = 'dist/service_list.html'
     paginate_by = 50
 
 
 class ServiceAdd(CreateView):
     model = Service
-    template_name = 'service_add.html'
+    template_name = 'dist/service_add.html'
     success_url = '/service_list'
 
 
 class ServiceEdit(UpdateView):
     model = Service
-    template_name = 'service_edit.html'
+    template_name = 'dist/service_edit.html'
     success_url = '/service_list'
 
 
 class ServiceDelete(DeleteView):
     model = Service
-    template_name = 'confirm_delete.html'
+    template_name = 'dist/confirm_delete.html'
     success_url = '/service_list'
 
 
 class ServiceCategoryList(ListView):
     model = ServiceCategory
     context_object_name = 'category'
-    template_name = 'service_category_list.html'
+    template_name = 'dist/service_category_list.html'
     paginate_by = 50
 
 
 class ServiceCategoryAdd(CreateView):
     model = ServiceCategory
-    template_name = 'service_category_add.html'
+    template_name = 'dist/service_category_add.html'
     success_url = '/service_category_list'
 
 
 class ServiceCategoryEdit(UpdateView):
     model = ServiceCategory
-    template_name = 'service_category_edit.html'
+    template_name = 'dist/service_category_edit.html'
     success_url = '/service_category_list'
 
 
 class ServiceCategoryDelete(DeleteView):
     model = ServiceCategory
-    template_name = 'confirm_delete.html'
+    template_name = 'dist/confirm_delete.html'
     success_url = '/service_category_list'
 
 
 class ServerList(ListView):
     model = Server
     context_object_name = 'server'
-    template_name = 'server_list.html'
+    template_name = 'dist/server_list.html'
     paginate_by = 50
 
 
 class ServerAdd(CreateView):
     model = Server
-    template_name = 'server_add.html'
+    template_name = 'dist/server_add.html'
     success_url = '/server_list'
 
 
 class ServerEdit(UpdateView):
     model = Server
-    template_name = 'server_edit.html'
+    template_name = 'dist/server_edit.html'
     success_url = '/server_list'
 
 
 class ServerDelete(DeleteView):
     model = Server
-    template_name = 'confirm_delete.html'
+    template_name = 'dist/confirm_delete.html'
     success_url = '/server_list'
 
 
 class EventPullList(ListView):
     model = EventPull
     context_object_name = 'event_pull'
-    template_name = 'event_pull_list.html'
+    template_name = 'dist/event_pull_list.html'
     paginate_by = 50
 
 
 class EventPushList(ListView):
     model = EventPush
     context_object_name = 'event_push'
-    template_name = 'event_push_list.html'
+    template_name = 'dist/event_push_list.html'
     paginate_by = 50

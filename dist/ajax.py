@@ -30,7 +30,7 @@ def refresh_task_queue(request):
 class ajax_queue(ListView):
     model = TaskModel
     context_object_name = "tasks"
-    template_name = 'ajax_queue.html'
+    template_name = 'dist/ajax_queue.html'
     paginate_by = 30
 
     def dispatch(self, request, *args, **kwargs):

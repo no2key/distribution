@@ -1,8 +1,8 @@
-{% extends "base.html" %}
-{% block title %}编辑服务器{% endblock %}
+{% extends "dist/base.html" %}
+{% block title %}编辑服务分类{% endblock %}
 {% block scripts %}
     <script type="text/javascript">
-        $("#server_edit").addClass("active");
+        $("#service_category_edit").addClass("active");
     </script>
 {% endblock %}
 {% block content %}
@@ -15,7 +15,7 @@
                     {{ form.as_table }}
                 </table>
                 <input class="btn btn-primary span2" type="submit" value="提交">
-                <a class="btn" href="/server_list">返回</a>
+                <a class="btn" href="/service_category_list">返回</a>
             </form>
     	</div>
     </div>
