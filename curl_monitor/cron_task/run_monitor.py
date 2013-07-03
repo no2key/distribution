@@ -92,7 +92,7 @@ def main():
         if not item['monitor_or_not']:
             continue
         url = item['url']
-        url_pattern = r'^(http:\/\/)?([^\/]+)$'
+        url_pattern = r'^(http:\/\/)?([^\/]+)'
         url_re_object = re.compile(url_pattern)
         target_list = url_re_object.find(url)
         domain = target_list[1]
