@@ -9,6 +9,7 @@ from distribution.settings import SVN_PREFIX, SVN_PASSWORD, SVN_USERNAME
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 import re
 from dist.tasks import invoke_shell_remote, invoke_shell_local, invoke_local_shell_no_task
 from dist.models import *
@@ -64,7 +65,7 @@ def svn_pull(request, pk):
         t_people=request.user.username,
     )
     task.save()
-    return HttpResponseRedirect('/task_queue/')
+    return HttpResponseRedirect(reverse("task_queue"))
 
 
 @login_required
@@ -109,7 +110,7 @@ def push_online(request, pk):
         t_people=request.user.username,
     )
     task.save()
-    return HttpResponseRedirect('/task_queue/')
+    return HttpResponseRedirect(reverse("task_queue"))
 
 
 @login_required
@@ -135,7 +136,7 @@ def service_restart(request, pk):
         t_people=request.user.username,
     )
     task.save()
-    return HttpResponseRedirect('/task_queue/')
+    return HttpResponseRedirect(reverse("task_queue"))
 
 
 def service_independent(request):

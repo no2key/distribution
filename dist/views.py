@@ -8,7 +8,7 @@
 import os
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from dist.models import *
@@ -51,7 +51,7 @@ def independent_script(request):
             error = "命令不能为空"
             return render(request, 'dist/service_independent_script.html', {'error': error})
         service_independent(request)
-        return HttpResponseRedirect("/task_queue/")
+        return HttpResponseRedirect(reverse("task_queue"))
     else:
         return render(request, 'dist/service_independent_script.html')
 
@@ -78,19 +78,25 @@ class ServiceList(ListView):
 class ServiceAdd(CreateView):
     model = Service
     template_name = 'dist/service_add.html'
-    success_url = '/service_list'
+
+    def get_success_url(self):
+        return reverse('service_list')
 
 
 class ServiceEdit(UpdateView):
     model = Service
     template_name = 'dist/service_edit.html'
-    success_url = '/service_list'
+
+    def get_success_url(self):
+        return reverse('service_list')
 
 
 class ServiceDelete(DeleteView):
     model = Service
     template_name = 'dist/confirm_delete.html'
-    success_url = '/service_list'
+
+    def get_success_url(self):
+        return reverse('service_list')
 
 
 class ServiceCategoryList(ListView):
@@ -103,19 +109,25 @@ class ServiceCategoryList(ListView):
 class ServiceCategoryAdd(CreateView):
     model = ServiceCategory
     template_name = 'dist/service_category_add.html'
-    success_url = '/service_category_list'
+
+    def get_success_url(self):
+        return reverse('service_category_list')
 
 
 class ServiceCategoryEdit(UpdateView):
     model = ServiceCategory
     template_name = 'dist/service_category_edit.html'
-    success_url = '/service_category_list'
+
+    def get_success_url(self):
+        return reverse('service_category_list')
 
 
 class ServiceCategoryDelete(DeleteView):
     model = ServiceCategory
     template_name = 'dist/confirm_delete.html'
-    success_url = '/service_category_list'
+
+    def get_success_url(self):
+        return reverse('service_category_list')
 
 
 class ServerList(ListView):
@@ -128,19 +140,25 @@ class ServerList(ListView):
 class ServerAdd(CreateView):
     model = Server
     template_name = 'dist/server_add.html'
-    success_url = '/server_list'
+
+    def get_success_url(self):
+        return reverse('server_list')
 
 
 class ServerEdit(UpdateView):
     model = Server
     template_name = 'dist/server_edit.html'
-    success_url = '/server_list'
+
+    def get_success_url(self):
+        return reverse('server_list')
 
 
 class ServerDelete(DeleteView):
     model = Server
     template_name = 'dist/confirm_delete.html'
-    success_url = '/server_list'
+
+    def get_success_url(self):
+        return reverse('server_list')
 
 
 class EventPullList(ListView):
