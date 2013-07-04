@@ -11,8 +11,10 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.forms import ModelForm, forms
 from dist.models import *
 from execute import service_independent
+from tasks import verify_path
 
 
 @login_required
@@ -67,6 +69,46 @@ class TaskQueue(ListView):
         return queryset
 
 
+class ServiceForm(ModelForm):
+    class Meta:
+        model = Service
+
+    def clean_svn_package_path(self):
+        super(ServiceForm, self).clean()
+        cd = self.cleaned_data
+        if not verify_path('SVN', "http://192.168.2.140:8080/svn/publish/code/%s" % cd['svn_package_path']):
+            raise forms.ValidationError("Code路径不存在")
+        return cd['svn_package_path']
+
+    def clean_svn_config_path(self):
+        super(ServiceForm, self).clean()
+        cd = self.cleaned_data
+        if not verify_path('SVN', "http://192.168.2.140:8080/svn/publish/config/%s" % cd['svn_config_path']):
+            raise forms.ValidationError("Config路径不存在")
+        return cd['svn_config_path']
+
+    def clean_execute_machine(self):
+        super(ServiceForm, self).clean()
+        cd = self.cleaned_data
+        if not verify_path('File', "/cygdrive/e/Publish/%s" % cd['execute_machine']):
+            raise forms.ValidationError("发布机路径不存在")
+        return cd['execute_machine']
+
+    def clean_svc_push(self):
+        super(ServiceForm, self).clean()
+        cd = self.cleaned_data
+        if not verify_path('File', "/cygdrive/e/Publish/tools/%s" % cd['svc_push']):
+            raise forms.ValidationError("推送脚本不存在")
+        return cd['svc_push']
+
+    def clean_svc_restart(self):
+        super(ServiceForm, self).clean()
+        cd = self.cleaned_data
+        if not verify_path('File', "/cygdrive/e/Publish/tools/%s" % cd['svc_restart']):
+            raise forms.ValidationError("重启脚本不存在")
+        return cd['svc_restart']
+
+
 class ServiceList(ListView):
     model = Service
     queryset = Service.objects.order_by('svc_name')
@@ -77,6 +119,7 @@ class ServiceList(ListView):
 
 class ServiceAdd(CreateView):
     model = Service
+    form_class = ServiceForm
     template_name = 'dist/service_add.html'
 
     def get_success_url(self):
@@ -85,6 +128,7 @@ class ServiceAdd(CreateView):
 
 class ServiceEdit(UpdateView):
     model = Service
+    form_class = ServiceForm
     template_name = 'dist/service_edit.html'
 
     def get_success_url(self):

@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import re
-from dist.tasks import invoke_shell_remote, invoke_shell_local, invoke_local_shell_no_task
+from dist.tasks import invoke_shell_remote, invoke_shell_local, invoke_shell_local_no_task
 from dist.models import *
 
 
@@ -19,13 +19,13 @@ from dist.models import *
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
     old_code = "cd /home/svnroot/code/%s; svn info" % service.svn_package_path
-    re_code = re.findall("Revision: (\d+)", invoke_local_shell_no_task(old_code))
+    re_code = re.findall("Revision: (\d+)", invoke_shell_local_no_task(old_code))
     if re_code:
         re_code = re_code[0]
     else:
         re_code = "?"
     old_config = "cd /home/svnroot/config/%s; svn info" % service.svn_config_path
-    re_config = re.findall("Revision: (\d+)", invoke_local_shell_no_task(old_config))
+    re_config = re.findall("Revision: (\d+)", invoke_shell_local_no_task(old_config))
     if re_config:
         re_config = re_config[0]
     else:
@@ -72,13 +72,13 @@ def svn_pull(request, pk):
 def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
     local_code = "cd /home/svnroot/code/%s; svn info" % service.svn_package_path
-    re_code = re.findall("Revision: (\d+)", invoke_local_shell_no_task(local_code))
+    re_code = re.findall("Revision: (\d+)", invoke_shell_local_no_task(local_code))
     if re_code:
         re_code = re_code[0]
     else:
         re_code = "?"
     local_config = "cd /home/svnroot/config/%s; svn info" % service.svn_config_path
-    re_config = re.findall("Revision: (\d+)", invoke_local_shell_no_task(local_config))
+    re_config = re.findall("Revision: (\d+)", invoke_shell_local_no_task(local_config))
     if re_config:
         re_config = re_config[0]
     else:

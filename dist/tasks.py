@@ -71,6 +71,32 @@ def get_result(id_):
     return result
 
 
-def invoke_local_shell_no_task(shell):
+def invoke_shell_remote_no_task(shell_path, ip='192.168.2.140', port=36000, username='Administrator', password=None):
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(ip, port, username, password)
+    _, out, err = client.exec_command(shell_path)
+    return out.read(), err.read()
+
+
+def invoke_shell_local_no_task(shell):
     out = os.popen(shell)
     return out.read()
+
+
+def verify_path(type_, path):
+    pos = path.rfind('/') + 1
+    if path[pos:] == '--':
+        return True
+    if type_ == 'SVN':
+        cmd = "svn list %s 2>&1" % path
+        result = invoke_shell_local_no_task(cmd)
+        if result.find('non-existent') != -1:
+            return False
+        return True
+    if type_ == 'File':
+        cmd = "ls %s" % path
+        result, err = invoke_shell_remote_no_task(cmd)
+        if err:
+            return False
+        return True
