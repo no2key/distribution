@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'task_queue/', login_required(views.TaskQueue.as_view()), name='task_queue'),
     url(r'refresh_queue/', ajax.refresh_task_queue, name='refresh_queue'),
     url(r'ajax_queue/', login_required(ajax.ajax_queue.as_view()), name='ajax_queue'),
+    url(r'validate_service/(?P<pk>\d+)', ajax.validate_service, name="validate_service"),
     url(r'^view_log/', login_required(views.view_log), name='view_log'),
 
     url(r'svn_pull/(?P<pk>\d+)', execute.svn_pull, name='svn_pull'),

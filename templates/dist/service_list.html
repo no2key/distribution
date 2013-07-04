@@ -3,6 +3,20 @@
 {% block scripts %}
     <script type="text/javascript">
         $("#service_list").addClass("active");
+        function validate(id){
+            $.get("/validate_service/" + id )
+                   .done(function(data){
+                       var obj = JSON.parse(data);
+                       for(key in obj){
+                           if(obj.hasOwnProperty(key)) {
+                               if(obj[key]==0){
+                                   var ele = "#"+key+"_"+id;
+                                   $(ele).addClass("error")
+                               }
+                           }
+                       }
+                   });
+        }
     </script>
 {% endblock %}
 {% block content %}
@@ -27,6 +41,7 @@
                             <h4>{{ item.svc_name }}</h4>
                             <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a>
                             <a class="btn btn-danger" href="/service_delete/{{ item.id }}">删除</a>
+                            <button type="button" value="{{ item.id }}" class="btn btn-view" onclick="validate($(this).val())">验证</button>
                         {% if item.svc_note %}
                             <br /><br />
                                 说明:&nbsp;{{ item.svc_note | linebreaks }}
@@ -40,23 +55,23 @@
                                     <br />
                             {%endfor%}
                         </td>
-                        <tr>
+                        <tr id="svn_package_path_{{ item.id }}">
                             <td>SVN包</td>
                             <td>{{ item.svn_package_path }}</td>
                         </tr>
-                        <tr>
+                        <tr id="svn_config_path_{{ item.id }}">
                             <td>SVN配置</td>
                             <td>{{ item.svn_config_path }}</td>
                         </tr>
-                        <tr>
+                        <tr id="execute_machine_{{ item.id }}">
                             <td>发布机路径</td>
                             <td>{{ item.execute_machine }}</td>
                         </tr>
-                        <tr>
+                        <tr id="svc_push_{{ item.id }}">
                             <td>推送脚本</td>
                             <td>{{ item.svc_push }}</td>
                         </tr>
-                        <tr>
+                        <tr id="svc_restart_{{ item.id }}">
                             <td>重启脚本</td>
                             <td>{{ item.svc_restart }}</td>
                         </tr>
