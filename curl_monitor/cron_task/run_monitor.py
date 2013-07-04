@@ -94,8 +94,8 @@ def main():
         url = item['url']
         url_pattern = r'^(http:\/\/)?([^\/]+)'
         url_re_object = re.compile(url_pattern)
-        target_list = url_re_object.find(url)
-        domain = target_list[1]
+        target_list = url_re_object.match(url)
+        domain = target_list.group(2)
 
         ip_list = item['ip_list'].split(';')
         new_url_list = []
