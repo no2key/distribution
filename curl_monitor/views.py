@@ -18,7 +18,9 @@ def get_monitor_list(request):
             "error_count": monitor.error_count,
             "last_status": monitor.last_status,
             "monitor_or_not": monitor.monitor_or_not,
-            "ip_list":  monitor.ip_list.split(';')
+            "ip_list":  monitor.ip_list.split(';'),
+            "persons_to_alert": monitor.persons_to_alert.split(';'),
+            "alert_interval": monitor.alert_interval
         })
     return render(request, 'curl_monitor/monitor_list.html',
                   {'monitor_list': monitor_dict_list}
@@ -47,11 +49,19 @@ def del_monitor(request):
 def add_monitor(request):
     url = request.POST['url_to_monitor']
     ips = request.POST['ips']
+    persons_to_alert = request.POST['persons_to_alert']
+    alert_interval = int(request.POST['alert_interval'])
     monitor_or_not = request.POST['monitor_or_not']
 
     return_dict = {}
     try:
-        MonitorItem.objects.create(url=url, ip_list=ips, monitor_or_not=monitor_or_not)
+        MonitorItem.objects.create(
+            url=url,
+            ip_list=ips,
+            persons_to_alert=persons_to_alert,
+            alert_interval=alert_interval,
+            monitor_or_not=monitor_or_not
+        )
     except:
         return_dict['status'] = 'failure'
         return_dict['msg'] = u'数据库操作失败'
@@ -65,11 +75,19 @@ def modify_monitor(request):
     id = request.POST['id']
     url_to_monitor = request.POST['url_to_monitor']
     ips = request.POST['ips']
-    monitor_or_not = request.POST['monitor_or_not']
+    persons_to_alert = request.POST['persons_to_alert']
+    alert_interval = int(request.POST['alert_interval'])
+    monitor_or_not = int(request.POST['monitor_or_not'])
 
     return_dict = {}
     try:
-        MonitorItem.objects.filter(id=id).update(url=url_to_monitor, ip_list=ips, monitor_or_not=monitor_or_not)
+        MonitorItem.objects.filter(id=id).update(
+            url=url_to_monitor,
+            ip_list=ips,
+            persons_to_alert=persons_to_alert,
+            alert_interval=alert_interval,
+            monitor_or_not=monitor_or_not
+        )
     except:
         return_dict['status'] = 'failure'
         return_dict['msg'] = u'数据库操作失败'

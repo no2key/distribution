@@ -9,9 +9,11 @@ import time
 import random
 import os
 import datetime
+from TofApi import TofApi
 
 
 LOG_ROOT = '/home/distribution/log/curl_log/'
+utc_now = datetime.datetime.utcnow()
 
 
 class MySQL(object):
@@ -63,13 +65,21 @@ def get_monitor_list():
     return monitor_list
 
 
+def get_last_time_alert(monitor_id):
+    sql = "SELECT date_time FROM curl_monitor_monitorlog WHERE monitor_id=%s AND alert_or_not=1 ORDER BY id DESC LIMIT 1" %(str(monitor_id),)
+    cursor.execute(sql)
+    last_time_alert = cursor.fetchone()
+
+    return last_time_alert
+
+
 def update_monitor_item(**args):
     sql = "UPDATE curl_monitor_monitoritem SET error_count=%s, last_status='%s' WHERE id=%s" %(args['error_count'], args['last_status'], args['id'])
     cursor.execute(sql)
 
 
 def insert_monitor_log(**args):
-    sql = "INSERT INTO curl_monitor_monitorlog (monitor_id, log_path, datetime) VALUES (%s, '%s', '%s')" %(args['monitor_id'], args['log_path'], datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
+    sql = "INSERT INTO curl_monitor_monitorlog (monitor_id, log_path, alert_or_not, date_time) VALUES (%s, '%s', %s '%s')" % (args['monitor_id'], args['log_path'], args['alert_or_not'], utc_now.strftime("%Y-%m-%d %H:%M:%S"))
     cursor.execute(sql)
 
 
@@ -97,18 +107,16 @@ def main():
         target_list = url_re_object.match(url)
         domain = target_list.group(2)
 
-        ip_list = item['ip_list'].split(';')
-        new_url_list = []
-        for ip in ip_list:
-            new_url_list.append(url.replace(domain, ip))
-
         result_to_store = {
             'error_count': item.error_count,
             'error_info': '',
-            'last_status': []
+            'last_status': [],
+            'alert_info': item['url'] + ': '
         }
         this_run_error_count = 0
-        for new_url in new_url_list:
+        ip_list = item['ip_list'].split(';')
+        for ip in ip_list:
+            new_url = url.replace(domain, ip)
             curl_obj.set_host_header(domain)
             result_dict = curl_obj.curl_url(new_url)
             result_to_store['last_status'].append(result_dict['http_code'])
@@ -116,6 +124,24 @@ def main():
                 this_run_error_count += 1
                 result_to_store['error_count'] += 1
                 result_to_store['error_info'] += '=' * 40 + '<br />' + result_dict['response_header']
+                result_to_store['alert_info'] += '%s - %s; ' % (ip, str(result_dict['http_code']))
+
+        alert_or_not = 0
+        time_to_last_alert = utc_now - time.mktime(time.strptime(get_last_time_alert(item['id']), "%Y-%m-%d %H:%M:%S"))
+        if (time_to_last_alert / 60) >= int(item['alert_interval']):
+            api = TofApi()
+            person_list = item['persons_to_alert'].split(';')
+            phone_pattern = re.compile('^\d{11}$')
+            sender = u"内网curl监控"
+            title = u"curl告警"
+            msg = result_to_store['alert_info']
+            for person in person_list:
+                if phone_pattern.match(person):
+                    api.send_sms(sender, person, title, msg)
+                else:
+                    api.send_rtx(sender, person, msg)
+            alert_or_not = 1
+
         if this_run_error_count > 0:
             log_dir = hashlib.new('md5', url).hexdigest()[0:5]
             log_file_name = 'log_' + str(time.time()) + '_' + str(random.randint(1000, 9999)) + '.log'
@@ -125,7 +151,7 @@ def main():
             log_absolute_path = log_path + log_file_name
             with open(log_absolute_path, 'w') as fh:
                 fh.write(result_to_store['error_info'])
-            insert_monitor_log(monitor_id=item['id'], log_path=log_absolute_path)
+            insert_monitor_log(monitor_id=item['id'], log_path=log_absolute_path, alert_or_not=alert_or_not)
 
         code_count_dict = counter(result_to_store['last_status'])
         last_status_info = ';'.join(['%s x %s' %(str(key), str(value)) for key, value in code_count_dict.iteritems()])
