@@ -35,7 +35,11 @@
                 </td>
                 <td class="alert_interval">{{ monitor_item.alert_interval }}</td>
                 <td class="error_count">{{ monitor_item.error_count }}</td>
-                <td class="last_status">{{ monitor_item.last_status }}</td>
+                <td class="last_status">
+                    {% for status in monitor_item.last_status %}
+                        {{ status }}<br />
+                    {% endfor %}
+                </td>
                 <td class="monitor_or_not">{{ monitor_item.monitor_or_not }}</td>
                 <td>
                     <button type="button" class="btn btn-primary modify_monitor_item">修改</button>

@@ -16,7 +16,7 @@ def get_monitor_list(request):
             "id": monitor.id,
             "url": monitor.url,
             "error_count": monitor.error_count,
-            "last_status": monitor.last_status,
+            "last_status": monitor.last_status.split(';'),
             "monitor_or_not": monitor.monitor_or_not,
             "ip_list":  monitor.ip_list.split(';'),
             "persons_to_alert": monitor.persons_to_alert.split(';'),
