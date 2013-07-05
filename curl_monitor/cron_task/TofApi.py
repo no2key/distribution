@@ -27,7 +27,7 @@ class TofApi(object):
 
     def _fill_envolope(self, envolope_body_template, *data):
         envolope_body = envolope_body_template %data
-        self.envolope = self.envolope_template.format(app_key=self.app_key, body=envolope_body)
+        self.envolope = self.envolope_template.format(app_key=self.app_key, body=envolope_body.encode('utf-8'))
 
     def _send_msg(self):
         web_service = httplib.HTTP(self.host)

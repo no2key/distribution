@@ -31,13 +31,13 @@ class Curl(object):
         self.curl.setopt(pycurl.HEADER, 1)
         self.curl.setopt(pycurl.MAXREDIRS, 5)
         self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
-        self.wf = StringIO.StringIO()
-        self.curl.setopt(pycurl.HEADERFUNCTION, self.wf.write)
 
     def set_host_header(self, host):
         self.curl.setopt(pycurl.HTTPHEADER, ['HOST:' + host])
 
     def curl_url(self, url):
+        wf = StringIO.StringIO()
+        self.curl.setopt(pycurl.HEADERFUNCTION, wf.write)
         self.curl.setopt(pycurl.URL, url)
         self.curl.perform()
         http_code = self.curl.getinfo(self.curl.HTTP_CODE)
@@ -48,7 +48,7 @@ class Curl(object):
             'http_code': http_code,
             'total_time': total_time,
             'content_length': content_length,
-            'response_header': self.wf.getvalue()
+            'response_header': wf.getvalue()
         }
 
 
@@ -79,7 +79,8 @@ def update_monitor_item(**args):
 
 
 def insert_monitor_log(**args):
-    sql = "INSERT INTO curl_monitor_monitorlog (monitor_id, log_path, alert_or_not, date_time) VALUES (%s, '%s', %s '%s')" % (args['monitor_id'], args['log_path'], args['alert_or_not'], utc_now.strftime("%Y-%m-%d %H:%M:%S"))
+    sql = "INSERT INTO curl_monitor_monitorlog (monitor_id, log_path, alert_or_not, date_time) VALUES (%s, '%s', %s, '%s')" \
+          % (args['monitor_id'], args['log_path'], args['alert_or_not'], utc_now.strftime("%Y-%m-%d %H:%M:%S"))
     cursor.execute(sql)
 
 
