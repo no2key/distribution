@@ -143,9 +143,9 @@ def main():
             msg = result_to_store['alert_info']
             for person in person_list:
                 if phone_pattern.match(person):
-                    api.send_sms(sender, person, title, msg)
+                    api.send_sms(sender, person, msg)
                 else:
-                    api.send_rtx(sender, person, msg)
+                    api.send_rtx(sender, person, title, msg)
             alert_or_not = 1
 
         if this_run_error_count > 0:
