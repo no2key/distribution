@@ -43,12 +43,13 @@ class Curl(object):
         http_code = self.curl.getinfo(self.curl.HTTP_CODE)
         total_time = self.curl.getinfo(self.curl.TOTAL_TIME)
         content_length = self.curl.getinfo(self.curl.CONTENT_LENGTH_DOWNLOAD)
-
+        response_header = wf.getvalue()
+        wf.close()
         return {
             'http_code': http_code,
             'total_time': total_time,
             'content_length': content_length,
-            'response_header': wf.getvalue()
+            'response_header': response_header
         }
 
 
