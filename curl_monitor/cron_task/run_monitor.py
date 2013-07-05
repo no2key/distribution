@@ -108,7 +108,7 @@ def main():
         domain = target_list.group(2)
 
         result_to_store = {
-            'error_count': item.error_count,
+            'error_count': item['error_count'],
             'error_info': '',
             'last_status': [],
             'alert_info': item['url'] + ': '
@@ -127,8 +127,14 @@ def main():
                 result_to_store['alert_info'] += '%s - %s; ' % (ip, str(result_dict['http_code']))
 
         alert_or_not = 0
-        time_to_last_alert = utc_now - time.mktime(time.strptime(get_last_time_alert(item['id']), "%Y-%m-%d %H:%M:%S"))
-        if (time_to_last_alert / 60) >= int(item['alert_interval']):
+        last_time_alert = get_last_time_alert(item['id'])
+        if last_time_alert:
+            time_to_last_alert = utc_now - time.mktime(time.strptime(last_time_alert), "%Y-%m-%d %H:%M:%S")
+            if (time_to_last_alert / 60) >= int(item['alert_interval']):
+                alert_or_not = 1
+        else:
+            alert_or_not = 1
+        if alert_or_not:
             api = TofApi()
             person_list = item['persons_to_alert'].split(';')
             phone_pattern = re.compile('^\d{11}$')
