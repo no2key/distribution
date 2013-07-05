@@ -16,10 +16,5 @@ urlpatterns = patterns('',
 
     url(r'', include('dist.urls')),
 
-    url(r'^curl/monitor_list/$', 'curl_monitor.views.get_monitor_list'),
-    url(r'^curl/add_monitor/$', 'curl_monitor.views.add_monitor'),
-    url(r'^curl/del_monitor/$', 'curl_monitor.views.del_monitor'),
-    url(r'^curl/modify_monitor/$', 'curl_monitor.views.modify_monitor'),
-    url(r'^curl/view_log_list/$', 'curl_monitor.views.get_log_list'),
-    url(r'^curl/view_log/$', 'curl_monitor.views.get_log_content'),
+    url(r'^curl/', include('curl_monitor.urls')),
 )
