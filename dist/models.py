@@ -110,3 +110,9 @@ class TaskModel(models.Model):
 
     def __unicode__(self):
         return self.t_service + ": " + self.t_content
+
+
+class Script(models.Model):
+    script_name = models.CharField(unique=True, max_length=100, verbose_name="脚本名称")
+    script_note = models.CharField(max_length=100, verbose_name="脚本说明")
+    script_path = models.CharField(max_length=100, verbose_name="脚本路径")

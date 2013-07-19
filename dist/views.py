@@ -24,6 +24,12 @@ def distribution(request):
 
 
 @login_required
+def script_execution(request):
+    script = Script.objects.all().order_by('script_name')
+    return render(request, 'dist/script_execution.html', {'script': script})
+
+
+@login_required
 def view_log(request):
     if request.method == "POST":
         f_name = 'log/%s' % request.POST['filename']
@@ -203,6 +209,36 @@ class ServerDelete(DeleteView):
 
     def get_success_url(self):
         return reverse('server_list')
+
+class ScriptList(ListView):
+    model = Script
+    context_object_name = 'script'
+    template_name = 'dist/script_list.html'
+    paginate_by = 50
+
+
+class ScriptAdd(CreateView):
+    model = Script
+    template_name = 'dist/script_add.html'
+
+    def get_success_url(self):
+        return reverse('script_list')
+
+
+class ScriptEdit(UpdateView):
+    model = Script
+    template_name = 'dist/script_edit.html'
+
+    def get_success_url(self):
+        return reverse('script_list')
+
+
+class ScriptDelete(DeleteView):
+    model = Script
+    template_name = 'dist/confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse('script_list')
 
 
 class EventPullList(ListView):

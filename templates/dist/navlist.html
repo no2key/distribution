@@ -5,6 +5,9 @@
 		<li id="service_distribution">
 			<a href = "{% url 'service_distribution' %}"><i class="icon-home"></i> ERP服务发布</a>
 		</li>
+        <li id="script_execution">
+			<a href = "{% url 'script_execution' %}"><i class="icon-play"></i> 执行独立脚本 </a>
+		</li>
         <li id="task_queue">
             <a href = "{% url 'task_queue' %}"><i class="icon-retweet"></i> 发布任务队列</a>
         </li>
@@ -39,8 +42,12 @@
             <a href = "{% url 'server_add' %}"><i class="icon-plus"></i> 新增服务器</a>
         </li>
         <li id="last_nav" class="divider"></li>
-        <li id="independent_script">
-            <a href = "{% url 'independent_script' %}"><i class="icon-warning-sign"></i> 执行独立脚本</a>
+        <li class="nav-header">执行独立脚本</li>
+		<li id="script_list">
+			<a href = "{% url 'script_list' %}"><i class="icon-list"></i> 独立脚本列表</a>
+		</li>
+        <li id="script_add">
+            <a href = "{% url 'script_add' %}"><i class="icon-plus"></i> 新增独立脚本</a>
         </li>
         <li id="last_nav" class="divider"></li>
         <li id="event_pull">
