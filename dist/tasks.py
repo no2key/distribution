@@ -54,7 +54,7 @@ def invoke_shell_local(shell_path, event=None):
         # For SVN Checkout
         f = open(f_name, 'r')
         content = f.read()
-        versions = re.findall('At revision (\d+)', content)
+        versions = re.findall('Checked out revision (\d+)', content)
         if len(versions) == 2:
             re_code = versions[0]
             re_config = versions[1]

@@ -10,7 +10,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.template import Context
+from django.template.loader import get_template
 import re
+import datetime
 from dist.tasks import invoke_shell_remote, invoke_shell_local, invoke_shell_local_no_task
 from dist.models import *
 
@@ -30,21 +33,19 @@ def svn_pull(request, pk):
         re_config = re_config[0]
     else:
         re_config = "?"
-    update_code = "cd /home/svnroot/code/%s; svn update --username=%s --password=%s;" % \
-                  (service.svn_package_path, SVN_USERNAME, SVN_PASSWORD)
-    update_config = "cd /home/svnroot/config/%s; svn update --username=%s --password=%s;" % \
-                    (service.svn_config_path, SVN_USERNAME, SVN_PASSWORD)
-    chmod = "chmod -R 777 /home/svnroot/code/%s; chmod -R 777 /home/svnroot/config/%s;" % \
-            (service.svn_package_path, service.svn_config_path)
-    prepare_temp_dir = "DATE=`date +%s`; mkdir /home/code_config_merge/tmp_$DATE/; "
-    code_merge = "rsync -av --exclude=.svn /home/svnroot/code/%s/ /home/code_config_merge/tmp_$DATE/;" % \
-                 service.svn_package_path
-    config_merge = "rsync -av --exclude=.svn /home/svnroot/config/%s/ /home/code_config_merge/tmp_$DATE/;" % \
-                   service.svn_config_path
-    rsync_140 = "rsync -e 'ssh -p 36000 -l Administrator' -azv --exclude=.svn" \
-                " /home/code_config_merge/tmp_$DATE/ 192.168.2.140:/cygdrive/e/Publish/%s/;" % service.execute_machine
-    clean = "rm -rf /home/code_config_merge/tmp_$DATE/;"
-    svn_command = update_code + update_config + chmod + prepare_temp_dir + code_merge + config_merge + rsync_140 + clean
+    n_now = datetime.datetime.now()
+    now_str = n_now.strftime("%Y-%m-%d_%H-%M-%S")
+    c = Context({
+        "svn_package_path": service.svn_package_path,
+        "svn_config_path": service.svn_config_path,
+        "username": SVN_USERNAME,
+        "password": SVN_PASSWORD,
+        "prefix": SVN_PREFIX,
+        "execute_machine": service.execute_machine,
+        "date": now_str,
+    })
+    t = get_template("dist/shell/svn_pull.sh")
+    svn_command = t.render(c)
     event = EventPull(
         pull_service=service,
         pull_people=request.user.username,
