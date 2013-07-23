@@ -18,22 +18,22 @@ from dist.tasks import invoke_shell_remote, invoke_shell_local, invoke_shell_loc
 from dist.models import *
 
 
+def get_revnum(code_or_config, path):
+    shell_str = "cd /home/svnroot/%s/%s; svn info" % (code_or_config, path)
+    revnum = re.findall("Revision: (\d+)", invoke_shell_local_no_task(shell_str))
+    if revnum:
+        revnum = revnum[0]
+    else:
+        revnum = "?"
+    return revnum
+
+
 @login_required
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
     r = request.POST.get("r", None)
-    old_code = "cd /home/svnroot/code/%s; svn info" % service.svn_package_path
-    re_code = re.findall("Revision: (\d+)", invoke_shell_local_no_task(old_code))
-    if re_code:
-        re_code = re_code[0]
-    else:
-        re_code = "?"
-    old_config = "cd /home/svnroot/config/%s; svn info" % service.svn_config_path
-    re_config = re.findall("Revision: (\d+)", invoke_shell_local_no_task(old_config))
-    if re_config:
-        re_config = re_config[0]
-    else:
-        re_config = "?"
+    re_code = get_revnum("code", service.svn_package_path)
+    re_config = get_revnum("config", service.svn_config_path)
     n_now = datetime.datetime.now()
     now_str = n_now.strftime("%Y-%m-%d_%H-%M-%S")
     c = Context({
@@ -79,18 +79,8 @@ def svn_pull(request, pk):
 @login_required
 def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    local_code = "cd /home/svnroot/code/%s; svn info" % service.svn_package_path
-    re_code = re.findall("Revision: (\d+)", invoke_shell_local_no_task(local_code))
-    if re_code:
-        re_code = re_code[0]
-    else:
-        re_code = "?"
-    local_config = "cd /home/svnroot/config/%s; svn info" % service.svn_config_path
-    re_config = re.findall("Revision: (\d+)", invoke_shell_local_no_task(local_config))
-    if re_config:
-        re_config = re_config[0]
-    else:
-        re_config = "?"
+    re_code = get_revnum("code", service.svn_package_path)
+    re_config = get_revnum("config", service.svn_config_path)
     svc_push = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_push + " 2>&1"
     event = EventPush(
         push_service=service,
