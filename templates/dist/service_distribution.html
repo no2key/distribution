@@ -53,6 +53,21 @@
                             {% else %}
                                 <td> <a class="btn disabled" href="javascript:void(0);">重启服务</a> </td>
                             {% endif %}
+                            <td>
+                                <form method="post" action="/svn_pull/{{ item.id }}">
+                                    {% csrf_token %}
+                                    <div class="input-append">
+                                        <input
+                                            class="input-mini"
+                                            name="r"
+                                            placeholder="版本号"
+                                            type="text"
+                                            onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46"
+                                        >
+                                        <input class="btn" type="submit" value="回退">
+                                    </div>
+                                </form>
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}

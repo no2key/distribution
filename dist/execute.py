@@ -21,6 +21,7 @@ from dist.models import *
 @login_required
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
+    r = request.POST.get("r", None)
     old_code = "cd /home/svnroot/code/%s; svn info" % service.svn_package_path
     re_code = re.findall("Revision: (\d+)", invoke_shell_local_no_task(old_code))
     if re_code:
@@ -44,7 +45,13 @@ def svn_pull(request, pk):
         "execute_machine": service.execute_machine,
         "date": now_str,
     })
-    t = get_template("dist/shell/svn_pull.sh")
+    if r is not None:
+        content = u"版本回退"
+        c['r'] = r
+        t = get_template("dist/shell/svn_roll_back.sh")
+    else:
+        content = u"SVN拉取新版本"
+        t = get_template("dist/shell/svn_pull.sh")
     svn_command = t.render(c)
     event = EventPull(
         pull_service=service,
@@ -59,7 +66,7 @@ def svn_pull(request, pk):
         m_result = result.result
     task = TaskModel(
         t_service=service,
-        t_content=u"SVN拉取新版本",
+        t_content=content,
         t_task_id=result.id,
         t_status=result.status,
         t_result=m_result,
