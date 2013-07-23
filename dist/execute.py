@@ -28,6 +28,10 @@ def get_revnum(code_or_config, path):
     return revnum
 
 
+def get_runshell(src_name):
+    return "cd /cygdrive/e/Publish/tools/; ./" + src_name + " 2>&1"
+
+
 @login_required
 def svn_pull(request, pk):
     service = get_object_or_404(Service, pk=pk)
@@ -81,7 +85,7 @@ def push_online(request, pk):
     service = get_object_or_404(Service, pk=pk)
     re_code = get_revnum("code", service.svn_package_path)
     re_config = get_revnum("config", service.svn_config_path)
-    svc_push = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_push + " 2>&1"
+    svc_push = get_runshell(service.svc_push)
     event = EventPush(
         push_service=service,
         push_people=request.user.username,
@@ -114,7 +118,7 @@ def push_online(request, pk):
 @login_required
 def service_restart(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    svc_restart = "cd /cygdrive/e/Publish/tools/; ./" + service.svc_restart + " 2>&1"
+    svc_restart = get_runshell(service.svc_restart)
     result = invoke_shell_remote.delay(
         shell_path=svc_restart,
         ip='192.168.2.140',
@@ -140,7 +144,7 @@ def service_restart(request, pk):
 def service_independent(request):
     service = get_object_or_404(Service, svc_name='Z_Independent_Scripts')
     script_name = request.POST['script']
-    script_to_run = "cd /cygdrive/e/Publish/tools/; ./" + script_name + " 2>&1"
+    script_to_run = get_runshell(script_name)
     result = invoke_shell_remote.delay(
         shell_path=script_to_run,
         ip='192.168.2.140',
