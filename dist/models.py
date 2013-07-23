@@ -79,7 +79,7 @@ class EventPull(models.Model):
         ordering = ['-pull_time']
 
     def __unicode__(self):
-        return "Code:%s=>%s;Config:%s=>%s." % \
+        return "Local Version: code:%s=>%s config:%s=>%s." % \
                (self.pull_code_from, self.pull_code_to, self.pull_config_from, self.pull_config_to)
 
 
@@ -96,7 +96,7 @@ class EventPush(models.Model):
         ordering = ['-push_time']
 
     def __unicode__(self):
-        return "At Version: code %s, config %s." % (self.push_code, self.push_config)
+        return "Online Version: code %s, config %s. " % (self.push_code, self.push_config)
 
 
 class TaskModel(models.Model):

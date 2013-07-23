@@ -36,6 +36,7 @@ def test_re():
 
 import pysvn
 import os
+from distribution.settings import SVN_PASSWORD, SVN_USERNAME
 
 
 class LocalSvnManipulate(object):
@@ -94,8 +95,8 @@ def checkout_or_update_to_revnum(remote, local, revnum):
     try:
         cl.status(local)
     except pysvn.ClientError:
-        cl.set_default_username = 'publishtest'
-        cl.set_default_password = 'publishtest'
+        cl.set_default_username = SVN_USERNAME
+        cl.set_default_password = SVN_PASSWORD
         rev = cl.checkout(
             url=remote,
             path=local,

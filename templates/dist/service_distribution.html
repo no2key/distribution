@@ -26,7 +26,7 @@
                     {% if item.svc_name != 'Z_Independent_Scripts' %}
                         <tr>
                             <td>
-                                {{item.svc_name}} <span class="label label-success">{{ item.eventpush_set.all.0 }}</span>
+                                {{item.svc_name}} <span class="label label-success">{{ item.eventpush_set.all.0 }}{{ item.eventpull_set.all.0 }}</span>
                                 {% if item.svc_note != "" %}
                                     <br /><br />
                                     <span class="label label-info span4">
