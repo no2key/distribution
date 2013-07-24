@@ -20,7 +20,7 @@ i{
     cursor: pointer;
 }
 
-.ip-item{
+.ip-item, .ip_item, .person-item, .person_item{
     display: inline-block;
     width: 250px;
 }

@@ -11,6 +11,8 @@
         <th>id</th>
         <th>URL</th>
         <th>ip列表</th>
+        <th>关注人</th>
+        <th>告警间隔</th>
         <th>错误数目</th>
         <th>最新状态</th>
         <th>是否监控</th>
@@ -26,14 +28,23 @@
                         {{ ip }}<br />
                     {% endfor %}
                 </td>
+                <td class="person_list">
+                    {% for person in monitor_item.persons_to_alert %}
+                        {{ person }}<br />
+                    {% endfor %}
+                </td>
+                <td class="alert_interval">{{ monitor_item.alert_interval }}</td>
                 <td class="error_count">{{ monitor_item.error_count }}</td>
-                <td class="last_status">{{ monitor_item.last_status }}</td>
+                <td class="last_status">
+                    {% for status in monitor_item.last_status %}
+                        {{ status }}<br />
+                    {% endfor %}
+                </td>
                 <td class="monitor_or_not">{{ monitor_item.monitor_or_not }}</td>
                 <td>
                     <button type="button" class="btn btn-primary modify_monitor_item">修改</button>
                     <button type="button" class="btn btn-warning del_monitor_item">删除</button>
-                    <button type="button" class="btn btn-info"><a href="/curl/view_log_list?id={{ monitor_item.id }}">查看日志</a>
-                    </button>
+                    <button type="button" class="btn btn-info" onClick="javascript:location.href='/curl/view_log_list?id={{ monitor_item.id }}'">查看日志</button>
                 </td>
             </tr>
         {% endfor %}
@@ -68,6 +79,21 @@
                                     <input type="text" class="input-large ip"/>
                                     <i class="icon-plus-sign"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="persons-to-alert">关注人</label>
+                            <div class="controls" id="persons-to-alert">
+                                <div class="person-item">
+                                    <input type="text" class="input-large person" placeholder="填RTX或手机号" />
+                                    <i class="icon-plus-sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="alert-interval">告警间隔</label>
+                            <div class="controls">
+                                <input type="number" class="input-large" id="alert-interval" name="alert-interval" maxlength="20" min="1" />
                             </div>
                         </div>
                         <div class="control-group">
@@ -115,6 +141,18 @@
                             <label class="control-label" for="ip_list">ip列表</label>
 
                             <div class="controls" id="ip_list">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="persons_to_alert">关注人</label>
+                            <div class="controls" id="persons_to_alert">
+
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="alert_interval">告警间隔</label>
+                            <div class="controls">
+                                <input type="number" class="input-large" id="alert_interval" name="alert-interval" maxlength="20" min="1" />
                             </div>
                         </div>
                         <div class="control-group">
