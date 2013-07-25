@@ -1,0 +1,26 @@
+body {
+    margin-top: 20px;
+}
+
+#add-monitor-item {
+    float: right;
+    margin-bottom: 15px;
+}
+
+#csrf-token, #monitor_id_modify, #csrf_token {
+    display: none;
+}
+
+a:link, a:active, a:visited {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+i{
+    cursor: pointer;
+}
+
+.ip-item, .ip_item, .person-item, .person_item{
+    display: inline-block;
+    width: 250px;
+}

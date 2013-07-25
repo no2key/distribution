@@ -1,0 +1,44 @@
+{% extends "dist/base.html" %}
+{% block title %}查看Log{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        function view_log(s){
+            file_name = s.substring(s.lastIndexOf("/"));
+            $.post("", {'filename': file_name, 'csrfmiddlewaretoken':'{{ csrf_token }}'})
+                   .done(function(data){
+                       $("#show_log").html(data);
+                   });
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid offset2">
+        <div class="row-fluid">
+            <div class="span4">
+                {% if logs %}
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th> Log Name </th>
+                                <th> 查看 </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in logs %}
+                            <tr>
+                                <td>{{ item }}</td>
+                                <td>
+                                    <button type="button" value="{{ item }}" class="btn btn-view" onclick="view_log($(this).val())">查看</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h3>暂无Log信息</h3>
+                {% endif %}
+            </div>
+            <div id="show_log" class="well span6"></div>
+        </div>
+    </div>
+{% endblock %}

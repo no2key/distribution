@@ -1,0 +1,13 @@
+a:link, a:active, a:visited {
+    text-decoration: none;
+}
+
+.btn {
+    margin-bottom: 15px;
+    float: right;
+}
+
+body {
+    margin-top: 20px;
+}
+
