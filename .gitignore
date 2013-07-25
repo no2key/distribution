@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 *.pyc
 .idea/
 log/
 settings.py
-=======
-*.pyc
-.idea/
-log/
->>>>>>> 1cab5b5bd2c27b7751579bc34333bc3c51e66be5
