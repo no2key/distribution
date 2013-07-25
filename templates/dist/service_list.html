@@ -1,0 +1,204 @@
+<<<<<<< HEAD
+{% extends "dist/base.html" %}
+{% block title %}查看ERP服务列表{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $("#service_list").addClass("active");
+        function validate(id){
+            $.get("/validate_service/" + id )
+                   .done(function(data){
+                       var obj = JSON.parse(data);
+                       for(key in obj){
+                           if(obj.hasOwnProperty(key)) {
+                               if(obj[key]==0){
+                                   var ele = "#"+key+"_"+id;
+                                   $(ele).addClass("error")
+                               }
+                           }
+                       }
+                   });
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid offset2">
+
+        <div class="container-fluid">
+            <a href="{% url 'service_add' %}" class="btn btn-primary btn-large pull-right"> 增加ERP服务 </a>
+            {% if svc %}
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th> 服务名称 </th>
+                        <th> 分类 </th>
+                        <th> 类型 </th>
+                        <th> 服务器 </th>
+                        <th colspan="2"> 配置 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in svc %}
+                        <td rowspan="6">
+                            <h4>{{ item.svc_name }}</h4>
+                            <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a>
+                            <a class="btn btn-danger" href="/service_delete/{{ item.id }}">删除</a>
+                            <button type="button" value="{{ item.id }}" class="btn btn-view" onclick="validate($(this).val())">验证</button>
+                        {% if item.svc_note %}
+                            <br /><br />
+                                说明:&nbsp;{{ item.svc_note | linebreaks }}
+                        {% endif %}
+                        </td>
+                        <td rowspan="6">{{ item.category }}</td>
+                        <td rowspan="6">{{ item.svc_type }}</td>
+                        <td rowspan="6">
+                            {% for m in item.server_list.all %}
+                                    {{ m.ip }}
+                                    <br />
+                            {%endfor%}
+                        </td>
+                        <tr id="svn_package_path_{{ item.id }}">
+                            <td>SVN包</td>
+                            <td>{{ item.svn_package_path }}</td>
+                        </tr>
+                        <tr id="svn_config_path_{{ item.id }}">
+                            <td>SVN配置</td>
+                            <td>{{ item.svn_config_path }}</td>
+                        </tr>
+                        <tr id="execute_machine_{{ item.id }}">
+                            <td>发布机路径</td>
+                            <td>{{ item.execute_machine }}</td>
+                        </tr>
+                        <tr id="svc_push_{{ item.id }}">
+                            <td>推送脚本</td>
+                            <td>{{ item.svc_push }}</td>
+                        </tr>
+                        <tr id="svc_restart_{{ item.id }}">
+                            <td>重启脚本</td>
+                            <td>{{ item.svc_restart }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h3>暂无ERP服务</h3>
+            {% endif %}
+    	</div>
+        <div >
+            <ul class="pager">
+                {% if page_obj.has_previous %}
+                    <li><a href="{% url 'service_list' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                {% endif %}
+                    <li>第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }}页</li>
+                {% if page_obj.has_next %}
+                    <li><a href="{% url 'service_list' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+=======
+{% extends "dist/base.html" %}
+{% block title %}查看ERP服务列表{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $("#service_list").addClass("active");
+        function validate(id){
+            $.get("/validate_service/" + id )
+                   .done(function(data){
+                       var obj = JSON.parse(data);
+                       for(key in obj){
+                           if(obj.hasOwnProperty(key)) {
+                               if(obj[key]==0){
+                                   var ele = "#"+key+"_"+id;
+                                   $(ele).addClass("error")
+                               }
+                           }
+                       }
+                   });
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid offset2">
+
+        <div class="container-fluid">
+            <a href="{% url 'service_add' %}" class="btn btn-primary btn-large pull-right"> 增加ERP服务 </a>
+            {% if svc %}
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th> 服务名称 </th>
+                        <th> 分类 </th>
+                        <th> 类型 </th>
+                        <th> 服务器 </th>
+                        <th colspan="2"> 配置 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in svc %}
+                        <td rowspan="6">
+                            <h4>{{ item.svc_name }}</h4>
+                            <a class="btn btn-info" href="/service_edit/{{ item.id }}">更改</a>
+                            <a class="btn btn-danger" href="/service_delete/{{ item.id }}">删除</a>
+                            <button type="button" value="{{ item.id }}" class="btn btn-view" onclick="validate($(this).val())">验证</button>
+                        {% if item.svc_note %}
+                            <br /><br />
+                                说明:&nbsp;{{ item.svc_note | linebreaks }}
+                        {% endif %}
+                        </td>
+                        <td rowspan="6">{{ item.category }}</td>
+                        <td rowspan="6">{{ item.svc_type }}</td>
+                        <td rowspan="6">
+                            {% for m in item.server_list.all %}
+                                    {{ m.ip }}
+                                    <br />
+                            {%endfor%}
+                        </td>
+                        <tr id="svn_package_path_{{ item.id }}">
+                            <td>SVN包</td>
+                            <td>{{ item.svn_package_path }}</td>
+                        </tr>
+                        <tr id="svn_config_path_{{ item.id }}">
+                            <td>SVN配置</td>
+                            <td>{{ item.svn_config_path }}</td>
+                        </tr>
+                        <tr id="execute_machine_{{ item.id }}">
+                            <td>发布机路径</td>
+                            <td>{{ item.execute_machine }}</td>
+                        </tr>
+                        <tr id="svc_push_{{ item.id }}">
+                            <td>推送脚本</td>
+                            <td>{{ item.svc_push }}</td>
+                        </tr>
+                        <tr id="svc_restart_{{ item.id }}">
+                            <td>重启脚本</td>
+                            <td>{{ item.svc_restart }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h3>暂无ERP服务</h3>
+            {% endif %}
+    	</div>
+        <div >
+            <ul class="pager">
+                {% if page_obj.has_previous %}
+                    <li><a href="{% url 'service_list' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                {% endif %}
+                    <li>第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }}页</li>
+                {% if page_obj.has_next %}
+                    <li><a href="{% url 'service_list' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+>>>>>>> 1cab5b5bd2c27b7751579bc34333bc3c51e66be5
+{% endblock %}

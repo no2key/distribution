@@ -1,0 +1,82 @@
+<<<<<<< HEAD
+{% extends "dist/base.html" %}
+{% block title %}查看任务队列{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $("#task_queue").addClass("active");
+        $.get('/ajax_queue/?{{ request.environ.QUERY_STRING }}', function(data) {
+            $('#ajax').html(data);
+        });
+        setInterval("refresh()", 10000);
+        function refresh(){
+            if($(":checkbox").prop("checked")==false){
+                $.get('/ajax_queue/?{{ request.environ.QUERY_STRING }}', function(data) {
+                    $('#ajax').html(data);
+                });
+            }
+        }
+
+    </script>
+{% endblock %}
+{% block content %}
+    <div id="content" class="container-fluid offset2">
+        <div id="ajax" class="container-fluid"></div>
+        <div >
+            <ul class="pager">
+                {% if page_obj.has_previous %}
+                    <li><a href="{% url 'task_queue' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                {% endif %}
+                <li>第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }}页</li>
+                {% if page_obj.has_next %}
+                    <li><a href="{% url 'task_queue' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div><input type="checkbox" value="yes" name="scroll" /> 停止自动刷新</div>
+    </div>
+=======
+{% extends "dist/base.html" %}
+{% block title %}查看任务队列{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $("#task_queue").addClass("active");
+        $.get('/ajax_queue/?{{ request.environ.QUERY_STRING }}', function(data) {
+            $('#ajax').html(data);
+        });
+        setInterval("refresh()", 10000);
+        function refresh(){
+            if($(":checkbox").prop("checked")==false){
+                $.get('/ajax_queue/?{{ request.environ.QUERY_STRING }}', function(data) {
+                    $('#ajax').html(data);
+                });
+            }
+        }
+
+    </script>
+{% endblock %}
+{% block content %}
+    <div id="content" class="container-fluid offset2">
+        <div id="ajax" class="container-fluid"></div>
+        <div >
+            <ul class="pager">
+                {% if page_obj.has_previous %}
+                    <li><a href="{% url 'task_queue' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                {% endif %}
+                <li>第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }}页</li>
+                {% if page_obj.has_next %}
+                    <li><a href="{% url 'task_queue' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div><input type="checkbox" value="yes" name="scroll" /> 停止自动刷新</div>
+    </div>
+>>>>>>> 1cab5b5bd2c27b7751579bc34333bc3c51e66be5
+{% endblock %}
