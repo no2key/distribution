@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 a:link, a:active, a:visited {
     text-decoration: none;
 }
@@ -11,3 +12,18 @@ body {
     margin-top: 20px;
 }
 
+=======
+a:link, a:active, a:visited {
+    text-decoration: none;
+}
+
+.btn {
+    margin-bottom: 15px;
+    float: right;
+}
+
+body {
+    margin-top: 20px;
+}
+
+>>>>>>> 1cab5b5bd2c27b7751579bc34333bc3c51e66be5
