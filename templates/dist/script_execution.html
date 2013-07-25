@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {% extends "dist/base.html" %}
 {% block title %}独立脚本执行{% endblock %}
 {% block scripts %}
@@ -48,55 +47,4 @@
             {% endif %}
     	</div>
     </div>
-=======
-{% extends "dist/base.html" %}
-{% block title %}独立脚本执行{% endblock %}
-{% block scripts %}
-    <script type="text/javascript">
-        $("#script_execution").addClass("active");
-        function execution(s){
-            $.post("/independent_script/", {'script': s, 'csrfmiddlewaretoken':'{{ csrf_token }}'})
-                   .done(function(data){
-                       self.location = "{% url 'task_queue' %}";
-                   });
-        }
-    </script>
-{% endblock %}
-{% block content %}
-    <div class="container-fluid offset2">
-
-        <div class="container-fluid">
-            {% if script %}
-            <table id="distribution" class="table table-striped table-hover ">
-                <thead>
-                    <tr>
-                        <th> 脚本名称 </th>
-                        <th> 路径 </th>
-                        <th> 备注 </th>
-                        <th> 执行 </th>
-                    </tr>
-                </thead>
-                {% for item in script %}
-                    <tr>
-                        <td>{{item.script_name}}</td>
-                        <td> /cygdrive/e/Publish/tools/{{item.script_path}} </td>
-                        <td> {{item.script_note}} </td>
-                        <td>
-                            <button type="button"
-                                    value="{{item.script_path}}"
-                                    class="btn btn-info"
-                                    onclick="execution($(this).val())">
-                                执行脚本
-                            </button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-            {% else %}
-                <h3>暂无可用脚本</h3>
-                <a href="{% url 'script_add' %}" class="btn btn-primary"> 增加独立脚本 </a>
-            {% endif %}
-    	</div>
-    </div>
->>>>>>> 1cab5b5bd2c27b7751579bc34333bc3c51e66be5
 {% endblock %}
