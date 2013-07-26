@@ -151,7 +151,6 @@ def service_independent(request):
         port=36000,
         username='Administrator'
     )
-    #result = invoke_shell_remote.delay("/home/test.sh", ip='192.168.2.237', port=22, username='root', password='redhat')
     if not result.result:
         m_result = ""
     else:
