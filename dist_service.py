@@ -10,7 +10,7 @@ def main(args):
     if method == 'start':
         os.system("""
 cd /home/distribution
-gunicorn distribution.wsgi:application &
+gunicorn distribution.wsgi:application -b 127.0.0.1:8002&
 python manage.py celery worker > /dev/null 2>&1&""")
     elif method == 'stop':
         os.system("kill -9 `ps -ef | grep gunicorn | grep -v grep | awk '{if(NR==1) print $2}'`")
@@ -21,7 +21,7 @@ python manage.py celery worker > /dev/null 2>&1&""")
         os.system("sleep 5")
         os.system("""
 cd /home/distribution
-gunicorn distribution.wsgi:application &
+gunicorn distribution.wsgi:application -b 127.0.0.1:8002&
 python manage.py celery worker > /dev/null 2>&1& """)
     else:
         print "Usage: %s start|stop|restart" % args[0]
